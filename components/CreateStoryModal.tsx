@@ -25,6 +25,12 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({ isOpen, onClose }) 
         setImage(null);
         onClose();
     };
+    
+    const shareStory = () => {
+        // In a real app, this would upload the story
+        console.log("Sharing story:", image);
+        discardStory();
+    }
 
     if (!isOpen) return null;
 
@@ -46,17 +52,19 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({ isOpen, onClose }) 
             onClick={(e) => e.stopPropagation()}
           >
             <header className="flex items-center justify-between p-4 z-10">
-                <button onClick={discardStory} className="p-2 bg-black/50 rounded-full text-white">
+                <button onClick={discardStory} className="p-2 bg-black/50 rounded-full text-white hover:bg-black/70">
                     <Icon name="XMark" className="w-6 h-6" />
                 </button>
-                <button onClick={discardStory} className="px-4 py-2 bg-accent rounded-full text-white font-bold">
-                    Share Story
-                </button>
+                {image && (
+                     <button onClick={shareStory} className="px-4 py-2 bg-accent rounded-full text-white font-bold hover:opacity-90">
+                        Share Story
+                    </button>
+                )}
             </header>
             <div className="flex-1 flex items-center justify-center">
                 {!image ? (
                     <div className="text-center text-white">
-                        <label htmlFor="story-upload" className="cursor-pointer">
+                        <label htmlFor="story-upload" className="cursor-pointer p-8 rounded-lg hover:bg-white/10">
                             <div className="w-24 h-24 border-2 border-dashed border-gray-500 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <Icon name="Photo" className="w-10 h-10 text-gray-500"/>
                             </div>
@@ -66,7 +74,7 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({ isOpen, onClose }) 
                         <input id="story-upload" type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
                     </div>
                 ) : (
-                    <img src={image} alt="Story preview" className="w-full h-full object-cover" />
+                    <img src={image} alt="Story preview" className="absolute inset-0 w-full h-full object-cover" />
                 )}
             </div>
           </motion.div>

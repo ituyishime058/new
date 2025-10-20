@@ -1,23 +1,55 @@
-
 import React, { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
-import type { Post as PostType, User } from '../types';
+import type { Post as PostType, User, Comment as CommentType } from '../types';
+import { currentUser } from '../constants';
 import Avatar from './Avatar';
 import Icon from './Icon';
 import Comment from './Comment';
 import ImageModal from './ImageModal';
 import VideoPlayer from './VideoPlayer';
 import Poll from './Poll';
+import ReactionPicker from './ReactionPicker';
+import { renderInteractiveText } from '../utils/textUtils';
 
 interface PostProps {
   post: PostType;
   onViewProfile: (user: User) => void;
+  onUpdatePost: (post: PostType) => void;
 }
 
-const Post: React.FC<PostProps> = ({ post, onViewProfile }) => {
-  const [isLiked, setIsLiked] = useState(false);
+const Post: React.FC<PostProps> = ({ post, onViewProfile, onUpdatePost }) => {
   const [showComments, setShowComments] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [showReactionPicker, setShowReactionPicker] = useState(false);
+  const [newComment, setNewComment] = useState('');
+
+  const handleReaction = (reaction: string) => {
+    const currentReactions = { ...(post.reactions || {}) };
+    currentReactions[reaction] = (currentReactions[reaction] || 0) + 1;
+    onUpdatePost({ ...post, reactions: currentReactions });
+    setShowReactionPicker(false);
+  };
+
+  const handleAddComment = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newComment.trim()) return;
+    const comment: CommentType = {
+      id: `comment-${Date.now()}`,
+      user: currentUser,
+      text: newComment,
+      timestamp: new Date().toISOString(),
+    };
+    onUpdatePost({ ...post, comments: [...post.comments, comment] });
+    setNewComment('');
+  };
+  
+  // FIX: Explicitly convert `count` to a number to avoid potential type errors with the '+' operator.
+  const totalReactions = Object.values(post.reactions || {}).reduce((sum, count) => sum + Number(count), 0);
+
+  const handleHashtagClick = (tag: string) => {
+    // In a real app, this would navigate to a search page for that tag
+    console.log(`Clicked hashtag: ${tag}`);
+  };
 
   return (
     <>
@@ -33,7 +65,9 @@ const Post: React.FC<PostProps> = ({ post, onViewProfile }) => {
               <span className="text-sm text-text-secondary">·</span>
               <p className="text-sm text-text-secondary">{formatDistanceToNow(new Date(post.timestamp), { addSuffix: true })}</p>
             </div>
-            <p className="text-text-primary mt-1 whitespace-pre-wrap">{post.content}</p>
+            <p className="text-text-primary mt-1 whitespace-pre-wrap">
+                {renderInteractiveText(post.content, onViewProfile, handleHashtagClick)}
+            </p>
 
             {post.imageUrl && (
               <div className="mt-3 rounded-2xl overflow-hidden border border-border-color cursor-pointer" onClick={() => setIsImageModalOpen(true)}>
@@ -62,10 +96,17 @@ const Post: React.FC<PostProps> = ({ post, onViewProfile }) => {
                 <Icon name="ArrowPathRoundedSquare" className="w-5 h-5" />
                 <span>{Math.floor(post.likes / 10)}</span>
               </button>
-              <button className={`flex items-center space-x-2 ${isLiked ? 'text-red-500' : 'hover:text-red-500'}`} onClick={() => setIsLiked(!isLiked)}>
-                <Icon name="Heart" className="w-5 h-5" variant={isLiked ? 'solid' : 'outline'} />
-                <span>{post.likes + (isLiked ? 1 : 0)}</span>
-              </button>
+              <div className="relative">
+                <button 
+                  onMouseEnter={() => setShowReactionPicker(true)}
+                  onMouseLeave={() => setShowReactionPicker(false)}
+                  className={`flex items-center space-x-2 hover:text-red-500`}
+                >
+                  <Icon name="Heart" className="w-5 h-5" />
+                  <span>{post.likes + totalReactions}</span>
+                </button>
+                {showReactionPicker && <ReactionPicker onSelect={handleReaction} />}
+              </div>
               <button className="flex items-center space-x-2 hover:text-text-primary">
                 <Icon name="ArrowUpTray" className="w-5 h-5" />
               </button>
@@ -73,8 +114,22 @@ const Post: React.FC<PostProps> = ({ post, onViewProfile }) => {
           </div>
         </div>
         {showComments && (
-          <div className="mt-4 pl-12 space-y-4">
+          <div className="mt-4 pl-12 space-y-4 animate-fade-in">
             {post.comments.map(comment => <Comment key={comment.id} comment={comment} />)}
+            <div className="flex items-start space-x-3 pt-4">
+                <Avatar src={currentUser.avatarUrl} alt={currentUser.name} size="sm" />
+                <form onSubmit={handleAddComment} className="flex-1 flex items-center space-x-2">
+                    <input 
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        placeholder="Write a comment..."
+                        className="w-full bg-secondary rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
+                    />
+                    <button type="submit" className="p-2 rounded-full hover:bg-secondary disabled:opacity-50" disabled={!newComment.trim()}>
+                        <Icon name="PaperAirplane" className="w-5 h-5 text-accent" />
+                    </button>
+                </form>
+            </div>
           </div>
         )}
       </div>

@@ -9,6 +9,31 @@ interface SearchPageProps {
   onViewProfile: (user: User) => void;
 }
 
+const UserSearchResult: React.FC<{ user: User, onViewProfile: (user: User) => void }> = ({ user, onViewProfile }) => {
+    const [isFollowing, setIsFollowing] = useState(false);
+    return (
+        <div className="flex items-center justify-between">
+            <button onClick={() => onViewProfile(user)} className="flex items-center space-x-3 group">
+                <Avatar src={user.avatarUrl} alt={user.name} size="md" />
+                <div>
+                    <p className="font-bold text-sm text-text-primary group-hover:underline">{user.name}</p>
+                    <p className="text-xs text-text-secondary">@{user.handle}</p>
+                </div>
+            </button>
+            <button 
+                onClick={() => setIsFollowing(!isFollowing)}
+                 className={`px-3 py-1 rounded-full text-sm font-semibold transition-colors ${
+                    isFollowing 
+                    ? 'bg-secondary text-text-primary border border-border-color' 
+                    : 'bg-accent text-white hover:opacity-90'
+                }`}
+            >
+                {isFollowing ? 'Following' : 'Follow'}
+            </button>
+        </div>
+    );
+};
+
 const SearchPage: React.FC<SearchPageProps> = ({ onViewProfile }) => {
     const [query, setQuery] = useState('');
 
@@ -50,18 +75,7 @@ const SearchPage: React.FC<SearchPageProps> = ({ onViewProfile }) => {
                             <h2 className="font-bold text-lg mb-4">People</h2>
                             <div className="space-y-4">
                                 {filteredUsers.map(user => (
-                                    <div key={user.id} className="flex items-center justify-between">
-                                        <button onClick={() => onViewProfile(user)} className="flex items-center space-x-3 group">
-                                            <Avatar src={user.avatarUrl} alt={user.name} size="md" />
-                                            <div>
-                                                <p className="font-bold text-sm text-text-primary group-hover:underline">{user.name}</p>
-                                                <p className="text-xs text-text-secondary">@{user.handle}</p>
-                                            </div>
-                                        </button>
-                                        <button className="bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold hover:opacity-90">
-                                            Follow
-                                        </button>
-                                    </div>
+                                    <UserSearchResult key={user.id} user={user} onViewProfile={onViewProfile} />
                                 ))}
                             </div>
                         </div>

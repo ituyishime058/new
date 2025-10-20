@@ -2,6 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import Icon from '../components/Icon';
 
+interface SettingsPageProps {
+    onLogout: () => void;
+}
+
 const SettingsSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
     <div className="mb-8">
         <h2 className="text-xl font-bold text-text-primary mb-4 pb-2 border-b border-border-color">{title}</h2>
@@ -29,7 +33,7 @@ const Toggle: React.FC<{ enabled: boolean; setEnabled: (enabled: boolean) => voi
 );
 
 
-const SettingsPage: React.FC = () => {
+const SettingsPage: React.FC<SettingsPageProps> = ({ onLogout }) => {
     const [emailNotifications, setEmailNotifications] = useState(true);
     const [darkMode, setDarkMode] = useState(() => localStorage.getItem('theme') === 'dark');
 
@@ -55,6 +59,9 @@ const SettingsPage: React.FC = () => {
                 </SettingsItem>
                 <SettingsItem icon="Key" title="Change Password" description="It's a good idea to use a strong password that you're not using elsewhere.">
                     <button className="text-sm text-accent font-semibold px-4 py-1.5 rounded-md hover:bg-secondary">Change</button>
+                </SettingsItem>
+                <SettingsItem icon="ArrowLeftOnRectangle" title="Logout" description="Log out of your Nexus account on this device.">
+                    <button onClick={onLogout} className="text-sm text-red-500 font-semibold px-4 py-1.5 rounded-md hover:bg-red-500/10">Logout</button>
                 </SettingsItem>
             </SettingsSection>
 

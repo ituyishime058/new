@@ -1,10 +1,40 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { users } from '../constants';
+// FIX: The 'User' type is exported from `types.ts`, not `constants.ts`.
+import type { User } from '../types';
 import Avatar from './Avatar';
-import Icon from './Icon';
 
-const RightSidebar: React.FC = () => {
+interface RightSidebarProps {
+  onViewProfile: (user: User) => void;
+}
+
+const FollowSuggestion: React.FC<{ user: User, onViewProfile: (user: User) => void }> = ({ user, onViewProfile }) => {
+    const [isFollowing, setIsFollowing] = useState(false);
+
+    return (
+        <div className="flex items-center justify-between">
+            <button onClick={() => onViewProfile(user)} className="flex items-center space-x-3 group">
+                <Avatar src={user.avatarUrl} alt={user.name} />
+                <div>
+                    <p className="font-bold text-sm text-text-primary group-hover:underline">{user.name}</p>
+                    <p className="text-xs text-text-secondary">@{user.handle}</p>
+                </div>
+            </button>
+            <button 
+                onClick={() => setIsFollowing(!isFollowing)}
+                className={`px-3 py-1 rounded-full text-sm font-semibold transition-colors ${
+                    isFollowing 
+                    ? 'bg-secondary text-text-primary border border-border-color' 
+                    : 'bg-accent text-white hover:opacity-90'
+                }`}
+            >
+                {isFollowing ? 'Following' : 'Follow'}
+            </button>
+        </div>
+    );
+};
+
+const RightSidebar: React.FC<RightSidebarProps> = ({ onViewProfile }) => {
   const suggestions = users.slice(1, 4);
 
   return (
@@ -13,18 +43,7 @@ const RightSidebar: React.FC = () => {
         <h2 className="font-bold text-lg text-text-primary mb-4">Who to follow</h2>
         <div className="space-y-4">
           {suggestions.map(user => (
-            <div key={user.id} className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <Avatar src={user.avatarUrl} alt={user.name} />
-                <div>
-                  <p className="font-bold text-sm text-text-primary">{user.name}</p>
-                  <p className="text-xs text-text-secondary">@{user.handle}</p>
-                </div>
-              </div>
-              <button className="bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold hover:opacity-90">
-                Follow
-              </button>
-            </div>
+            <FollowSuggestion key={user.id} user={user} onViewProfile={onViewProfile} />
           ))}
         </div>
       </div>

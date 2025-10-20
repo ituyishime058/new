@@ -1,35 +1,44 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { users } from '../constants';
 import Icon from './Icon';
 import Avatar from './Avatar';
 import { User } from '../types';
 
-
 interface FollowListModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: 'Followers' | 'Following';
+  onViewProfile: (user: User) => void;
 }
 
-const UserItem: React.FC<{ user: User }> = ({ user }) => (
-    <div className="flex items-center justify-between p-3">
-        <div className="flex items-center space-x-3">
-            <Avatar src={user.avatarUrl} alt={user.name} size="md" />
-            <div>
-                <p className="font-bold text-sm text-text-primary">{user.name}</p>
-                <p className="text-xs text-text-secondary">@{user.handle}</p>
-            </div>
+const UserItem: React.FC<{ user: User, onViewProfile: (user: User) => void }> = ({ user, onViewProfile }) => {
+    const [isFollowing, setIsFollowing] = useState(Math.random() > 0.5);
+    return (
+        <div className="flex items-center justify-between p-3">
+            <button onClick={() => onViewProfile(user)} className="flex items-center space-x-3 group text-left">
+                <Avatar src={user.avatarUrl} alt={user.name} size="md" />
+                <div>
+                    <p className="font-bold text-sm text-text-primary group-hover:underline">{user.name}</p>
+                    <p className="text-xs text-text-secondary">@{user.handle}</p>
+                </div>
+            </button>
+            <button 
+                 onClick={() => setIsFollowing(!isFollowing)}
+                 className={`px-3 py-1 rounded-full text-sm font-semibold transition-colors w-24 ${
+                    isFollowing 
+                    ? 'bg-secondary text-text-primary border border-border-color' 
+                    : 'bg-accent text-white hover:opacity-90'
+                }`}
+            >
+                {isFollowing ? 'Following' : 'Follow'}
+            </button>
         </div>
-        <button className="bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold hover:opacity-90">
-            Follow
-        </button>
-    </div>
-)
+    );
+};
 
-const FollowListModal: React.FC<FollowListModalProps> = ({ isOpen, onClose, title }) => {
-
+const FollowListModal: React.FC<FollowListModalProps> = ({ isOpen, onClose, title, onViewProfile }) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -55,7 +64,7 @@ const FollowListModal: React.FC<FollowListModalProps> = ({ isOpen, onClose, titl
                 </button>
             </header>
             <div className="flex-1 overflow-y-auto divide-y divide-border-color">
-                {users.slice(1).map(user => <UserItem key={user.id} user={user} />)}
+                {users.slice(1).map(user => <UserItem key={user.id} user={user} onViewProfile={(u) => { onViewProfile(u); onClose(); }} />)}
             </div>
           </motion.div>
         </motion.div>

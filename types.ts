@@ -50,6 +50,7 @@ export interface Post {
   timestamp: string;
   likes: number;
   comments: Comment[];
+  reactions?: { [key: string]: number };
 }
 
 export interface Story {

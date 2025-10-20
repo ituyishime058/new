@@ -70,3 +70,26 @@ export const getAiChatResponse = async (sessionId: string, message: string): Pro
         return "I'm having a little trouble connecting right now. Please try again in a moment.";
     }
 };
+
+export const generateImageWithImagen = async (prompt: string): Promise<string> => {
+    try {
+        const response = await ai.models.generateImages({
+            model: 'imagen-4.0-generate-001',
+            prompt: prompt,
+            config: {
+              numberOfImages: 1,
+              outputMimeType: 'image/jpeg',
+              aspectRatio: '1:1',
+            },
+        });
+
+        if (response.generatedImages && response.generatedImages.length > 0) {
+            const base64ImageBytes: string = response.generatedImages[0].image.imageBytes;
+            return `data:image/jpeg;base64,${base64ImageBytes}`;
+        }
+        throw new Error("No image was generated.");
+    } catch (error) {
+        console.error("Error generating image with Imagen:", error);
+        throw new Error("Sorry, the image could not be generated at this time.");
+    }
+};
