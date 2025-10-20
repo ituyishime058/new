@@ -1,0 +1,57 @@
+
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Icon from './Icon';
+import { User } from '../types';
+import Avatar from './Avatar';
+
+interface AudioCallModalProps {
+  isOpen: boolean;
+  user: User | null;
+  onClose: () => void;
+}
+
+const AudioCallModal: React.FC<AudioCallModalProps> = ({ isOpen, user, onClose }) => {
+  if (!user) return null;
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 backdrop-blur-sm"
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            className="bg-gray-800 rounded-2xl w-full max-w-sm h-auto p-8 shadow-2xl flex flex-col items-center relative overflow-hidden"
+          >
+            <p className="text-gray-400 mb-4">AUDIO CALL</p>
+            <Avatar src={user.avatarUrl} alt={user.name} size="lg"/>
+            <p className="mt-4 text-2xl font-bold text-white">{user.name}</p>
+            <p className="text-gray-400 mt-1">Ringing...</p>
+            
+            <div className="flex items-center space-x-6 mt-8">
+                <button className="p-3 bg-white/10 rounded-full text-white hover:bg-white/20 transition-colors">
+                    <Icon name="Microphone" className="w-6 h-6" />
+                </button>
+                 <button onClick={onClose} className="p-4 bg-red-500 rounded-full text-white hover:bg-red-600 transition-colors transform hover:scale-110">
+                    <Icon name="PhoneXMark" className="w-7 h-7" />
+                </button>
+                 <button className="p-3 bg-white/10 rounded-full text-white hover:bg-white/20 transition-colors">
+                    <Icon name="SpeakerWave" className="w-6 h-6" />
+                </button>
+            </div>
+
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
+export default AudioCallModal;

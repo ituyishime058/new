@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nexus - Social Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Custom scrollbar styles */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: var(--scrollbar-thumb-color, #4a4a6a);
+        border-radius: 10px;
+        border: 2px solid var(--scrollbar-track-color, #1e1e2e);
+      }
+      body {
+        --accent-start: #6366F1;
+        --accent-end: #A855F7;
+        --background-color: #f0f2f5;
+        --primary-color: #ffffff;
+        --secondary-color: #f0f2f5;
+        --text-primary-color: #1c1e21;
+        --text-secondary-color: #65676b;
+        --border-color: #e0e0e0;
+        --scrollbar-thumb-color: #c1c1c1;
+        --scrollbar-track-color: #f0f2f5;
+      }
+      html.dark body {
+        --accent-start: #818cf8;
+        --accent-end: #c084fc;
+        --background-color: #121212;
+        --primary-color: #1e1e1e;
+        --secondary-color: #2a2a2a;
+        --text-primary-color: #e4e6eb;
+        --text-secondary-color: #b0b3b8;
+        --border-color: #3e4042;
+        --scrollbar-thumb-color: #4a4a4a;
+        --scrollbar-track-color: #1e1e1e;
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+    <script>
+      // Flash prevention script
+      (function() {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+                background: 'var(--background-color)',
+                primary: 'var(--primary-color)',
+                secondary: 'var(--secondary-color)',
+                'text-primary': 'var(--text-primary-color)',
+                'text-secondary': 'var(--text-secondary-color)',
+                'border-color': 'var(--border-color)',
+                accent: {
+                    DEFAULT: 'var(--accent-end)',
+                    start: 'var(--accent-start)',
+                    end: 'var(--accent-end)',
+                },
+            },
+            keyframes: {
+                'fade-in': {
+                    '0%': { opacity: '0' },
+                    '100%': { opacity: '1' },
+                },
+                'zoom-in': {
+                    '0%': { transform: 'scale(0.95)' },
+                    '100%': { transform: 'scale(1)' },
+                },
+            },
+            animation: {
+                'fade-in': 'fade-in 0.2s ease-out',
+                'zoom-in': 'zoom-in 0.2s ease-out',
+            }
+          },
+        },
+      }
+    </script>
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "react/": "https://aistudiocdn.com/react@^19.2.0/",
+        "@google/genai": "https://aistudiocdn.com/@google/genai@^1.25.0",
+        "date-fns": "https://aistudiocdn.com/date-fns@^4.1.0",
+        "@heroicons/react/": "https://aistudiocdn.com/@heroicons/react@^2.2.0/",
+        "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.24"
+      }
+    }
+    </script>
+</head>
+<body class="bg-background">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>

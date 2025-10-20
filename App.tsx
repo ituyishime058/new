@@ -1,0 +1,109 @@
+
+import React, { useState } from 'react';
+import Header from './components/Header';
+import LeftSidebar from './components/LeftSidebar';
+import RightSidebar from './components/RightSidebar';
+import BottomNav from './components/BottomNav';
+import Feed from './components/Feed';
+import MessagesPage from './pages/MessagesPage';
+import NotificationsPage from './pages/NotificationsPage';
+import ProfilePage from './pages/ProfilePage';
+import SettingsPage from './pages/SettingsPage';
+import ExplorePage from './pages/ExplorePage';
+import ReelsPage from './pages/ReelsPage';
+import SearchPage from './pages/SearchPage';
+import LivePage from './pages/LivePage';
+import NotificationToast from './components/NotificationToast';
+import { posts as initialPosts, currentUser } from './constants';
+import type { Post, User, Notification } from './types';
+
+type Page = 'home' | 'explore' | 'reels' | 'messages' | 'notifications' | 'profile' | 'settings' | 'search' | 'live';
+
+const App: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState<Page>('home');
+  const [posts, setPosts] = useState<Post[]>(initialPosts);
+  const [profileUser, setProfileUser] = useState<User>(currentUser);
+  const [notification, setNotification] = useState<Notification | null>(null);
+
+  const handleNavigate = (page: Page) => {
+    if (page === 'profile') {
+      setProfileUser(currentUser);
+    }
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
+  
+  const handleViewProfile = (user: User) => {
+    setProfileUser(user);
+    setCurrentPage('profile');
+    window.scrollTo(0, 0);
+  };
+
+  const handleAddPost = (newPostData: Omit<Post, 'id' | 'author' | 'timestamp' | 'likes' | 'comments'>) => {
+    const newPost: Post = {
+      ...newPostData,
+      id: `post-${Date.now()}`,
+      author: currentUser,
+      timestamp: new Date().toISOString(),
+      likes: 0,
+      comments: [],
+    };
+    setPosts(prevPosts => [newPost, ...prevPosts]);
+    
+    // Show notification
+    setNotification({
+        id: `notif-${Date.now()}`,
+        type: 'post',
+        user: currentUser,
+        read: false,
+        timestamp: new Date().toISOString(),
+        message: 'Your post was successfully created!'
+    });
+  };
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'home':
+        return <Feed posts={posts} onAddPost={handleAddPost} onViewProfile={handleViewProfile} />;
+      case 'messages':
+        return <MessagesPage onViewProfile={handleViewProfile} />;
+      case 'notifications':
+        return <NotificationsPage />;
+      case 'profile':
+        return <ProfilePage user={profileUser} onViewProfile={handleViewProfile} />;
+      case 'settings':
+        return <SettingsPage />;
+      case 'explore':
+        return <ExplorePage />;
+      case 'reels':
+        return <ReelsPage />;
+      case 'search':
+          return <SearchPage onViewProfile={handleViewProfile} />;
+      case 'live':
+          return <LivePage />;
+      default:
+        return <Feed posts={posts} onAddPost={handleAddPost} onViewProfile={handleViewProfile} />;
+    }
+  };
+
+  return (
+    <div className="bg-background text-text-primary min-h-screen">
+      <Header onNavigate={handleNavigate} />
+      <NotificationToast notification={notification} onClose={() => setNotification(null)} />
+      <main className="container mx-auto px-4 grid grid-cols-12 gap-8 pt-20 pb-20 md:pb-8">
+        <aside className="hidden md:block md:col-span-3">
+          <LeftSidebar onNavigate={handleNavigate} currentPage={currentPage} />
+        </aside>
+        <div className="col-span-12 md:col-span-9 lg:col-span-6">
+          {renderPage()}
+        </div>
+        <aside className="hidden lg:block lg:col-span-3">
+          <RightSidebar />
+        </aside>
+      </main>
+      <BottomNav onNavigate={handleNavigate} currentPage={currentPage} />
+    </div>
+  );
+};
+
+export default App;

@@ -1,0 +1,8 @@
+{
+  "name": "Nexus - Social Hub",
+  "description": "A modern, interactive web application where people can meet, share their thoughts, images, and files. Features include a dynamic feed, posting, commenting, and AI-powered content generation.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
