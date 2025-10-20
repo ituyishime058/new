@@ -8,7 +8,7 @@ export const renderInteractiveText = (
     // FIX: Use the imported User type instead of any.
     onMentionClick: (user: User) => void, 
     onHashtagClick: (tag: string) => void
-) => {
+): React.ReactNode[] => {
     const parts = text.split(/([@#]\w+)/g);
 
     return parts.map((part, index) => {

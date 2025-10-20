@@ -1,75 +1,109 @@
-
 import React, { useState } from 'react';
-import { User } from '../types';
-import { posts, highlights } from '../constants';
+import { Post as PostType, User } from '../types';
+import { posts as initialPosts, currentUser } from '../constants';
 import Avatar from '../components/Avatar';
+import Icon from '../components/Icon';
 import Post from '../components/Post';
 import Highlights from '../components/Highlights';
-import EditProfileModal from '../components/EditProfileModal';
 import FollowListModal from '../components/FollowListModal';
+import EditProfileModal from '../components/EditProfileModal';
 
 interface ProfilePageProps {
   user: User;
   onViewProfile: (user: User) => void;
-  onLogout: () => void;
+  onUpdateUser: (user: User) => void;
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({ user, onViewProfile, onLogout }) => {
-  const [userPosts, setUserPosts] = useState(posts.filter(p => p.author.id === user.id));
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
-  const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
+const ProfilePage: React.FC<ProfilePageProps> = ({ user: initialUser, onViewProfile, onUpdateUser }) => {
+  const [user, setUser] = useState(initialUser);
+  const [userPosts] = useState<PostType[]>(initialPosts.filter(p => p.author.id === initialUser.id));
+  const [isFollowersModalOpen, setFollowersModalOpen] = useState(false);
+  const [isFollowingModalOpen, setFollowingModalOpen] = useState(false);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const isCurrentUserProfile = user.id === currentUser.id;
 
-  const handleUpdatePost = (updatedPost: any) => {
-    setUserPosts(prevPosts => prevPosts.map(p => p.id === updatedPost.id ? updatedPost : p));
+  const handleSaveProfile = (updatedUser: User) => {
+    setUser(updatedUser);
+    onUpdateUser(updatedUser);
   };
   
-  const handleProfileUpdate = (updatedUser: User) => {
-    // In a real app, this would update a global user state.
-    // For now, we just log it.
-    console.log("Profile updated:", updatedUser);
-  };
+  React.useEffect(() => {
+      setUser(initialUser);
+  }, [initialUser])
 
   return (
     <>
       <div className="bg-primary shadow-md rounded-xl overflow-hidden">
-        <div className="h-48 bg-cover bg-center" style={{backgroundImage: 'url(https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2070&auto=format&fit=crop)'}}>
-          {/* Cover Photo */}
-        </div>
-        <div className="p-4">
-          <div className="flex items-end -mt-20">
-            <div className="w-32 h-32 rounded-full border-4 border-primary bg-primary">
-                <Avatar src={user.avatarUrl} alt={user.name} size="lg" />
-            </div>
-            <div className="ml-auto flex space-x-2">
-              <button onClick={() => setIsEditModalOpen(true)} className="px-4 py-2 border border-border-color rounded-full font-semibold hover:bg-secondary">Edit Profile</button>
-              <button onClick={onLogout} className="px-4 py-2 border border-border-color rounded-full font-semibold hover:bg-secondary">Logout</button>
+        {/* Profile Header */}
+        <div className="p-6">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
+            <Avatar src={user.avatarUrl} alt={user.name} size="lg" />
+            <div className="flex-1 text-center sm:text-left">
+              <div className="flex items-center justify-center sm:justify-start space-x-4">
+                <h1 className="text-2xl font-bold text-text-primary">{user.name}</h1>
+                {isCurrentUserProfile ? (
+                  <button onClick={() => setEditModalOpen(true)} className="px-4 py-1.5 border border-border-color rounded-md text-sm font-semibold hover:bg-secondary">
+                    Edit Profile
+                  </button>
+                ) : (
+                  <button className="px-4 py-1.5 bg-accent text-white rounded-md text-sm font-semibold hover:opacity-90">
+                    Follow
+                  </button>
+                )}
+              </div>
+              <p className="text-text-secondary mt-1">@{user.handle}</p>
+              <p className="text-text-primary mt-3">{user.bio}</p>
+
+              <div className="flex justify-center sm:justify-start space-x-6 mt-4">
+                <div className="text-center">
+                  <span className="font-bold">{userPosts.length}</span> <span className="text-text-secondary">posts</span>
+                </div>
+                <button onClick={() => setFollowersModalOpen(true)} className="text-center">
+                  <span className="font-bold">{user.followers || 0}</span> <span className="text-text-secondary">followers</span>
+                </button>
+                <button onClick={() => setFollowingModalOpen(true)} className="text-center">
+                  <span className="font-bold">{user.following || 0}</span> <span className="text-text-secondary">following</span>
+                </button>
+              </div>
             </div>
           </div>
-          <h1 className="text-2xl font-bold mt-4">{user.name}</h1>
-          <p className="text-text-secondary">@{user.handle}</p>
-          <p className="mt-2">{user.bio}</p>
-          <div className="flex space-x-4 mt-4 text-sm">
-            <button onClick={() => setIsFollowingModalOpen(true)} className="hover:underline"><span className="font-bold">{user.following}</span> Following</button>
-            <button onClick={() => setIsFollowersModalOpen(true)} className="hover:underline"><span className="font-bold">{user.followers}</span> Followers</button>
-          </div>
-        </div>
-        
-        <Highlights highlights={highlights} />
-
-        <div className="border-t border-border-color p-4">
-          <h2 className="text-lg font-bold">Posts</h2>
         </div>
 
+        {/* Highlights */}
+        {user.highlights && user.highlights.length > 0 && <Highlights highlights={user.highlights} />}
+
+        {/* Posts */}
         <div>
-          {userPosts.map(post => (
-            <Post key={post.id} post={post} onViewProfile={onViewProfile} onUpdatePost={handleUpdatePost} />
-          ))}
+          {userPosts.length > 0 ? (
+            userPosts.map(post => (
+              <Post key={post.id} post={post} onViewProfile={onViewProfile} />
+            ))
+          ) : (
+            <div className="text-center py-16 text-text-secondary">
+                <Icon name="Camera" className="w-16 h-16 mx-auto text-gray-400" />
+                <h3 className="mt-4 text-lg font-semibold">No Posts Yet</h3>
+            </div>
+          )}
         </div>
       </div>
-      <EditProfileModal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} user={user} onSave={handleProfileUpdate} />
-      <FollowListModal isOpen={isFollowersModalOpen} onClose={() => setIsFollowersModalOpen(false)} title="Followers" onViewProfile={onViewProfile} />
-      <FollowListModal isOpen={isFollowingModalOpen} onClose={() => setIsFollowingModalOpen(false)} title="Following" onViewProfile={onViewProfile} />
+      <FollowListModal
+        isOpen={isFollowersModalOpen}
+        onClose={() => setFollowersModalOpen(false)}
+        title="Followers"
+        onViewProfile={onViewProfile}
+      />
+      <FollowListModal
+        isOpen={isFollowingModalOpen}
+        onClose={() => setFollowingModalOpen(false)}
+        title="Following"
+        onViewProfile={onViewProfile}
+      />
+      <EditProfileModal 
+        isOpen={isEditModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        user={user}
+        onSave={handleSaveProfile}
+      />
     </>
   );
 };

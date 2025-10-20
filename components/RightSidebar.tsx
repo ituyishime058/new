@@ -1,57 +1,52 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { users } from '../constants';
-// FIX: The 'User' type is exported from `types.ts`, not `constants.ts`.
-import type { User } from '../types';
 import Avatar from './Avatar';
+import Icon from './Icon';
 
-interface RightSidebarProps {
-  onViewProfile: (user: User) => void;
-}
-
-const FollowSuggestion: React.FC<{ user: User, onViewProfile: (user: User) => void }> = ({ user, onViewProfile }) => {
-    const [isFollowing, setIsFollowing] = useState(false);
-
-    return (
-        <div className="flex items-center justify-between">
-            <button onClick={() => onViewProfile(user)} className="flex items-center space-x-3 group">
-                <Avatar src={user.avatarUrl} alt={user.name} />
-                <div>
-                    <p className="font-bold text-sm text-text-primary group-hover:underline">{user.name}</p>
-                    <p className="text-xs text-text-secondary">@{user.handle}</p>
-                </div>
-            </button>
-            <button 
-                onClick={() => setIsFollowing(!isFollowing)}
-                className={`px-3 py-1 rounded-full text-sm font-semibold transition-colors ${
-                    isFollowing 
-                    ? 'bg-secondary text-text-primary border border-border-color' 
-                    : 'bg-accent text-white hover:opacity-90'
-                }`}
-            >
-                {isFollowing ? 'Following' : 'Follow'}
-            </button>
-        </div>
-    );
-};
-
-const RightSidebar: React.FC<RightSidebarProps> = ({ onViewProfile }) => {
-  const suggestions = users.slice(1, 4);
+const RightSidebar: React.FC = () => {
+  const suggestions = users.filter(u => u.id !== 'user-1' && u.id !== 'nexus-ai').slice(0, 4);
 
   return (
-    <div className="p-2 space-y-4 sticky top-20">
-      <div className="bg-primary p-4 rounded-xl shadow-md">
-        <h2 className="font-bold text-lg text-text-primary mb-4">Who to follow</h2>
+    <div className="p-4 space-y-8 sticky top-20">
+      {/* Friend Suggestions */}
+      <div className="bg-primary p-4 rounded-xl shadow-sm">
+        <h2 className="font-bold text-text-primary mb-4">Suggestions for you</h2>
         <div className="space-y-4">
           {suggestions.map(user => (
-            <FollowSuggestion key={user.id} user={user} onViewProfile={onViewProfile} />
+            <div key={user.id} className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <Avatar src={user.avatarUrl} alt={user.name} size="md" />
+                <div>
+                  <p className="font-bold text-sm text-text-primary">{user.name}</p>
+                  <p className="text-xs text-text-secondary">Suggested for you</p>
+                </div>
+              </div>
+              <button className="text-accent text-sm font-semibold">Follow</button>
+            </div>
           ))}
         </div>
       </div>
-      <footer className="text-xs text-text-secondary space-x-2">
-        <span>Terms of Service</span>
-        <span>Privacy Policy</span>
-        <span>© 2024</span>
-      </footer>
+
+      {/* Active Friends */}
+      <div className="bg-primary p-4 rounded-xl shadow-sm">
+        <h2 className="font-bold text-text-primary mb-4">Active Now</h2>
+        <div className="space-y-4">
+          {users.slice(1, 4).map(user => (
+            <div key={user.id} className="flex items-center space-x-3">
+              <div className="relative">
+                <Avatar src={user.avatarUrl} alt={user.name} size="md" />
+                <span className="absolute bottom-0 right-0 block h-3 w-3 rounded-full bg-green-500 ring-2 ring-primary"></span>
+              </div>
+              <div>
+                <p className="font-bold text-sm text-text-primary">{user.name}</p>
+              </div>
+              <button className="ml-auto p-1 rounded-full hover:bg-secondary">
+                <Icon name="ChatBubbleOvalLeftEllipsis" className="w-5 h-5 text-text-secondary" />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

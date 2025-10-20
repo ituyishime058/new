@@ -1,142 +1,125 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Post, User, Notification } from './types';
+import { posts as initialPosts, currentUser as initialCurrentUser } from './constants';
 import Header from './components/Header';
-import LeftSidebar from './components/LeftSidebar';
+import LeftSidebar from './LeftSidebar';
 import RightSidebar from './components/RightSidebar';
-import BottomNav from './components/BottomNav';
 import Feed from './components/Feed';
 import MessagesPage from './pages/MessagesPage';
-import NotificationsPage from './pages/NotificationsPage';
-import ProfilePage from './pages/ProfilePage';
-import SettingsPage from './pages/SettingsPage';
 import ExplorePage from './pages/ExplorePage';
+import NotificationsPage from './pages/NotificationsPage';
 import ReelsPage from './pages/ReelsPage';
+import ProfilePage from './pages/ProfilePage';
 import SearchPage from './pages/SearchPage';
-import LivePage from './pages/LivePage';
-import NotificationToast from './components/NotificationToast';
-import LandingPage from './pages/LandingPage';
+import SettingsPage from './pages/SettingsPage';
+import BottomNav from './BottomNav';
 import AuthPage from './pages/AuthPage';
-import { posts as initialPosts, currentUser } from './constants';
-import type { Post, User, Notification } from './types';
+import NotificationToast from './components/NotificationToast';
+import LivePage from './pages/LivePage';
 
-type Page = 'home' | 'explore' | 'reels' | 'messages' | 'notifications' | 'profile' | 'settings' | 'search' | 'live' | 'landing' | 'auth';
+type Page = 'home' | 'messages' | 'explore' | 'notifications' | 'reels' | 'profile' | 'search' | 'settings' | 'live';
 
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentPage, setCurrentPage] = useState<Page>('landing');
+  const [isAuthenticated, setIsAuthenticated] = useState(true); // Default to true for development
+  const [currentPage, setCurrentPage] = useState<Page>('home');
   const [posts, setPosts] = useState<Post[]>(initialPosts);
-  const [profileUser, setProfileUser] = useState<User>(currentUser);
-  const [notification, setNotification] = useState<Notification | null>(null);
+  const [currentUser, setCurrentUser] = useState<User>(initialCurrentUser);
+  const [profileUser, setProfileUser] = useState<User>(initialCurrentUser);
+  const [notificationToast, setNotificationToast] = useState<Notification | null>(null);
 
-  useEffect(() => {
-    // Check for a saved auth state to persist login
-    const savedAuth = localStorage.getItem('nexus-auth');
-    if (savedAuth === 'true') {
-        setIsAuthenticated(true);
-        setCurrentPage('home');
-    }
-  }, []);
-
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-    setCurrentPage('home');
-    localStorage.setItem('nexus-auth', 'true');
-  };
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setCurrentPage('landing');
-    localStorage.removeItem('nexus-auth');
-  };
-
-  const handleNavigate = (page: Page) => {
-    if (page === 'profile') {
+  const handleNavigate = (page: Page, user?: User) => {
+    if (page === 'profile' && user) {
+      setProfileUser(user);
+    } else if (page === 'profile' && !user) {
       setProfileUser(currentUser);
     }
     setCurrentPage(page);
     window.scrollTo(0, 0);
   };
   
-  const handleViewProfile = (user: User) => {
-    setProfileUser(user);
-    setCurrentPage('profile');
-    window.scrollTo(0, 0);
-  };
+  const handleLoginSuccess = () => {
+      setIsAuthenticated(true);
+      handleNavigate('home');
+  }
 
-  const handleAddPost = (newPostData: Omit<Post, 'id' | 'author' | 'timestamp' | 'likes' | 'comments'>) => {
-    const newPost: Post = {
-      ...newPostData,
+  const handleAddPost = (newPost: Omit<Post, 'id' | 'author' | 'timestamp' | 'likes' | 'comments'>) => {
+    const postToAdd: Post = {
+      ...newPost,
       id: `post-${Date.now()}`,
       author: currentUser,
       timestamp: new Date().toISOString(),
       likes: 0,
       comments: [],
-      reactions: {},
     };
-    setPosts(prevPosts => [newPost, ...prevPosts]);
-    
-    setNotification({
-        id: `notif-${Date.now()}`,
-        type: 'post',
-        user: currentUser,
-        read: false,
-        timestamp: new Date().toISOString(),
-        message: 'Your post was successfully created!'
+    setPosts(prevPosts => [postToAdd, ...prevPosts]);
+    setNotificationToast({
+      id: `notif-${Date.now()}`,
+      type: 'post',
+      message: 'Your post was successfully published!',
+      user: currentUser,
+      read: true,
+      timestamp: new Date().toISOString(),
     });
   };
 
-  const updatePost = (updatedPost: Post) => {
+  const handleUpdatePost = (updatedPost: Post) => {
     setPosts(posts.map(p => p.id === updatedPost.id ? updatedPost : p));
   };
   
-  if (!isAuthenticated) {
-      if (currentPage === 'auth') {
-          return <AuthPage onLogin={handleLogin} onNavigateToLanding={() => setCurrentPage('landing')} />;
+  const handleUpdateUser = (updatedUser: User) => {
+      if(updatedUser.id === currentUser.id) {
+          setCurrentUser(updatedUser);
       }
-      return <LandingPage onNavigateToAuth={() => setCurrentPage('auth')} />;
-  }
+      setProfileUser(updatedUser);
+  };
 
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
-        return <Feed posts={posts} onAddPost={handleAddPost} onViewProfile={handleViewProfile} onUpdatePost={updatePost} />;
+        return <Feed posts={posts} onAddPost={handleAddPost} onViewProfile={(user) => handleNavigate('profile', user)} onUpdatePost={handleUpdatePost} />;
       case 'messages':
-        return <MessagesPage onViewProfile={handleViewProfile} />;
-      case 'notifications':
-        return <NotificationsPage />;
-      case 'profile':
-        return <ProfilePage user={profileUser} onViewProfile={handleViewProfile} onLogout={handleLogout}/>;
-      case 'settings':
-        return <SettingsPage onLogout={handleLogout}/>;
+        return <MessagesPage onViewProfile={(user) => handleNavigate('profile', user)} />;
       case 'explore':
         return <ExplorePage />;
+      case 'notifications':
+        return <NotificationsPage />;
       case 'reels':
-        return <ReelsPage />;
+          return <ReelsPage />;
+      case 'profile':
+          return <ProfilePage user={profileUser} onViewProfile={(user) => handleNavigate('profile', user)} onUpdateUser={handleUpdateUser} />;
       case 'search':
-          return <SearchPage onViewProfile={handleViewProfile} />;
+        return <SearchPage onViewProfile={(user) => handleNavigate('profile', user)} />;
+      case 'settings':
+        return <SettingsPage onLogout={() => setIsAuthenticated(false)} />;
       case 'live':
           return <LivePage />;
       default:
-        return <Feed posts={posts} onAddPost={handleAddPost} onViewProfile={handleViewProfile} onUpdatePost={updatePost} />;
+        return <Feed posts={posts} onAddPost={handleAddPost} onViewProfile={(user) => handleNavigate('profile', user)} onUpdatePost={handleUpdatePost} />;
     }
   };
 
+  if (!isAuthenticated) {
+      return <AuthPage onSuccess={handleLoginSuccess} />;
+  }
+
   return (
     <div className="bg-background text-text-primary min-h-screen">
-      <Header onNavigate={handleNavigate} />
-      <NotificationToast notification={notification} onClose={() => setNotification(null)} />
-      <main className="container mx-auto px-4 grid grid-cols-12 gap-8 pt-20 pb-20 md:pb-8">
-        <aside className="hidden md:block md:col-span-3">
-          <LeftSidebar onNavigate={handleNavigate} currentPage={currentPage} />
-        </aside>
-        <div className="col-span-12 md:col-span-9 lg:col-span-6">
-          {renderPage()}
+      <Header onNavigate={(page) => setCurrentPage(page as any)} />
+      <main className="container mx-auto px-4 pt-20 pb-24 md:pb-8">
+        <div className="grid grid-cols-12 gap-8">
+          <div className="hidden md:block md:col-span-3">
+            <LeftSidebar onNavigate={(page) => handleNavigate(page as Page)} currentPage={currentPage} />
+          </div>
+          <div className="col-span-12 md:col-span-6">
+            {renderPage()}
+          </div>
+          <div className="hidden lg:block lg:col-span-3">
+            <RightSidebar />
+          </div>
         </div>
-        <aside className="hidden lg:block lg:col-span-3">
-          <RightSidebar onViewProfile={handleViewProfile}/>
-        </aside>
       </main>
-      <BottomNav onNavigate={handleNavigate} currentPage={currentPage} />
+      <BottomNav onNavigate={(page) => handleNavigate(page as Page)} currentPage={currentPage} />
+      <NotificationToast notification={notificationToast} onClose={() => setNotificationToast(null)} />
     </div>
   );
 };
