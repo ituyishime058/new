@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 // FIX: Add file extension to import.
-import { Story } from '../types.ts';
+import { Story } from '../types';
 import Icon from './Icon.tsx';
 import Avatar from './Avatar.tsx';
 import { formatDistanceToNow } from 'date-fns';

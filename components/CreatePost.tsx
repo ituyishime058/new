@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react';
 // FIX: Add file extension to import.
-import { currentUser } from '../constants.ts';
+import { currentUser } from '../constants';
 // FIX: Add file extension to import.
-import { Post, User } from '../types.ts';
+import { Post, User } from '../types';
 import Avatar from './Avatar.tsx';
 import Icon from './Icon.tsx';
 

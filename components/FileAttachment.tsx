@@ -1,7 +1,7 @@
 
 import React from 'react';
 // FIX: Add file extension to import.
-import { Message } from '../types.ts';
+import { Message } from '../types';
 import Icon from './Icon';
 
 interface FileAttachmentProps {

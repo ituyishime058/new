@@ -5,9 +5,9 @@ import { posts as initialPosts } from '../constants.ts';
 // FIX: Add file extension to import.
 import { Post as PostType, User } from '../types.ts';
 import CreatePost from './CreatePost.tsx';
-import Post from './Post.tsx';
+import Post from './Post';
 // FIX: Add file extension to import.
-import Stories from './Stories.tsx';
+import Stories from './Stories';
 
 interface FeedProps {
     onViewProfile: (user: User) => void;

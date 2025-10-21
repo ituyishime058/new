@@ -3,7 +3,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Icon from './Icon';
 // FIX: Add file extension to import.
-import { highlights } from '../constants.ts';
+import { highlights } from '../constants';
 
 interface AddToHighlightModalProps {
   isOpen: boolean;

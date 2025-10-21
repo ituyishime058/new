@@ -1,7 +1,7 @@
 
 import React from 'react';
 // FIX: Add file extension to imports.
-import { users } from '../constants.ts';
+import { users } from '../constants';
 import type { User } from '../types.ts';
 
 export const renderInteractiveText = (

@@ -1,161 +1,157 @@
-
-import React, { useState, useEffect } from 'react';
-import Icon from '../components/Icon';
-// FIX: Add file extension to imports.
-import { loginActivity, currentUser } from '../constants.ts';
+import React, { useState } from 'react';
+import Icon from '../components/Icon.tsx';
+import { currentUser, loginActivity } from '../constants.ts';
+import Avatar from '../components/Avatar.tsx';
 import { LoginActivity } from '../types.ts';
-import { format } from 'date-fns';
 
-interface ThemeSettings {
-    accentHue: number;
-    fontSize: 'sm' | 'base' | 'lg';
-    reduceMotion: boolean;
-}
+type SettingsTab = 'account' | 'security' | 'notifications' | 'appearance';
 
-interface SettingsPageProps {
-    onLogout: () => void;
-    settings: ThemeSettings;
-    onSettingsChange: (settings: ThemeSettings) => void;
-}
+const SettingsPage: React.FC = () => {
+    const [activeTab, setActiveTab] = useState<SettingsTab>('account');
 
-const SettingsSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-    <div className="mb-8">
-        <h2 className="text-xl font-bold text-text-primary mb-4 pb-2 border-b border-border-color">{title}</h2>
-        <div className="space-y-1">{children}</div>
-    </div>
-);
+    const renderContent = () => {
+        switch(activeTab) {
+            case 'account': return <AccountSettings />;
+            case 'security': return <SecuritySettings />;
+            case 'notifications': return <NotificationSettings />;
+            case 'appearance': return <AppearanceSettings />;
+            default: return null;
+        }
+    }
 
-const SettingsItem: React.FC<{ icon: string; title: string; description: string; children: React.ReactNode; }> = ({ icon, title, description, children }) => (
-    <div className="flex items-center justify-between p-3 rounded-lg hover:bg-secondary transition-colors">
-        <div className="flex items-start">
-            <Icon name={icon} className="w-6 h-6 text-accent mt-1" />
-            <div className="ml-4">
-                <h3 className="font-semibold text-text-primary">{title}</h3>
-                <p className="text-sm text-text-secondary">{description}</p>
+    return (
+        <div className="bg-primary shadow-md rounded-xl overflow-hidden min-h-[calc(100vh-10rem)]">
+            <header className="p-4 border-b border-border-color">
+                <h1 className="text-xl font-bold text-text-primary">Settings</h1>
+            </header>
+            <div className="grid grid-cols-12">
+                <div className="col-span-12 md:col-span-3 border-r border-border-color p-2">
+                    <SettingsTabButton icon="UserCircle" label="Account" tabName="account" activeTab={activeTab} onClick={setActiveTab} />
+                    <SettingsTabButton icon="ShieldCheck" label="Security" tabName="security" activeTab={activeTab} onClick={setActiveTab} />
+                    <SettingsTabButton icon="Bell" label="Notifications" tabName="notifications" activeTab={activeTab} onClick={setActiveTab} />
+                    <SettingsTabButton icon="Sun" label="Appearance" tabName="appearance" activeTab={activeTab} onClick={setActiveTab} />
+                </div>
+                <div className="col-span-12 md:col-span-9 p-6">
+                    {renderContent()}
+                </div>
             </div>
         </div>
-        <div className="flex-shrink-0">{children}</div>
+    );
+};
+
+const SettingsTabButton: React.FC<{icon: string, label: string, tabName: SettingsTab, activeTab: SettingsTab, onClick: (tab: SettingsTab) => void}> = ({ icon, label, tabName, activeTab, onClick}) => {
+    const isActive = activeTab === tabName;
+    return (
+        <button 
+            onClick={() => onClick(tabName)} 
+            className={`w-full flex items-center space-x-3 p-3 rounded-lg text-left transition-colors ${isActive ? 'bg-secondary text-text-primary' : 'hover:bg-secondary text-text-secondary'}`}
+        >
+            <Icon name={icon} className="w-6 h-6" />
+            <span>{label}</span>
+        </button>
+    )
+}
+
+const AccountSettings = () => (
+    <div>
+        <h2 className="text-lg font-bold mb-6">Account Information</h2>
+        <div className="space-y-4">
+            <div className="flex items-center space-x-4">
+                <Avatar src={currentUser.avatarUrl} alt={currentUser.name} size="lg"/>
+                <button className="px-4 py-2 border border-border-color rounded-full font-semibold hover:bg-secondary">Change Photo</button>
+            </div>
+            <SettingsField label="Name" value={currentUser.name} />
+            <SettingsField label="Handle" value={`@${currentUser.handle}`} />
+            <SettingsField label="Email" value="alex.johnson@example.com" />
+            <SettingsField label="Bio" value={currentUser.bio || ''} type="textarea" />
+        </div>
     </div>
 );
 
-const Toggle: React.FC<{ enabled: boolean; setEnabled: (enabled: boolean) => void }> = ({ enabled, setEnabled }) => (
-    <button onClick={() => setEnabled(!enabled)} className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors ${enabled ? 'bg-accent' : 'bg-gray-400 dark:bg-gray-600'}`}>
-        <span className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${enabled ? 'translate-x-6' : 'translate-x-1'}`} />
-    </button>
+const SecuritySettings = () => (
+     <div>
+        <h2 className="text-lg font-bold mb-6">Security & Login</h2>
+        <div className="space-y-6">
+            <div>
+                <h3 className="font-semibold mb-2">Change Password</h3>
+                <div className="space-y-2 max-w-sm">
+                    <input type="password" placeholder="Current Password" className="w-full bg-secondary p-2 rounded-md" />
+                    <input type="password" placeholder="New Password" className="w-full bg-secondary p-2 rounded-md" />
+                    <input type="password" placeholder="Confirm New Password" className="w-full bg-secondary p-2 rounded-md" />
+                    <button className="px-4 py-2 bg-accent text-white rounded-md font-semibold">Update Password</button>
+                </div>
+            </div>
+             <div>
+                <h3 className="font-semibold mb-2">Login Activity</h3>
+                <div className="space-y-3">
+                    {loginActivity.map((activity: LoginActivity) => (
+                        <div key={activity.id} className="flex items-center justify-between p-3 bg-secondary rounded-lg">
+                            <div>
+                                <p className="font-semibold">{activity.device}</p>
+                                <p className="text-sm text-text-secondary">{activity.location} - {activity.ipAddress}</p>
+                                {activity.isCurrent && <span className="text-xs text-green-500 font-bold">Active Now</span>}
+                            </div>
+                            {!activity.isCurrent && <button className="text-sm font-semibold text-text-secondary hover:text-red-500">Log out</button>}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    </div>
 );
 
-const AccentColorPicker: React.FC<{ currentHue: number; onHueChange: (hue: number) => void }> = ({ currentHue, onHueChange }) => {
-    const colors = [
-        { name: 'Default', hue: 231 }, { name: 'Rose', hue: 340 }, { name: 'Orange', hue: 24 },
-        { name: 'Lime', hue: 100 }, { name: 'Sky', hue: 195 }, { name: 'Violet', hue: 260 }
-    ];
-    return (
-        <div className="flex space-x-2">
-            {colors.map(color => (
-                <button
-                    key={color.hue}
-                    title={color.name}
-                    onClick={() => onHueChange(color.hue)}
-                    className={`w-8 h-8 rounded-full transition-all ring-offset-2 ring-offset-primary ${currentHue === color.hue ? 'ring-2 ring-accent' : 'hover:scale-110'}`}
-                    style={{ backgroundColor: `hsl(${color.hue}, 60%, 65%)` }}
-                />
-            ))}
+const NotificationSettings = () => (
+    <div>
+        <h2 className="text-lg font-bold mb-6">Notification Settings</h2>
+        <div className="space-y-4">
+            <ToggleSetting label="Push Notifications" description="Receive notifications on your device."/>
+            <ToggleSetting label="Email Notifications" description="Get important updates via email."/>
+            <ToggleSetting label="In-App Sounds" description="Play sounds for notifications inside the app."/>
         </div>
-    );
-};
-
-const FontSizeSelector: React.FC<{ currentSize: string; onSizeChange: (size: 'sm' | 'base' | 'lg') => void }> = ({ currentSize, onSizeChange }) => {
-    const sizes = [
-        { label: 'Small', value: 'sm', class: 'text-sm' },
-        { label: 'Default', value: 'base', class: 'text-base' },
-        { label: 'Large', value: 'lg', class: 'text-lg' }
-    ];
-    return (
-        <div className="bg-secondary p-1 rounded-full flex space-x-1">
-            {sizes.map(size => (
-                <button
-                    key={size.value}
-                    onClick={() => onSizeChange(size.value as any)}
-                    className={`px-4 py-1 rounded-full font-semibold transition-colors ${currentSize === size.value ? 'bg-primary shadow-sm' : 'hover:bg-primary/50'} ${size.class}`}
-                >
-                    {size.label}
-                </button>
-            ))}
+    </div>
+);
+const AppearanceSettings = () => (
+    <div>
+        <h2 className="text-lg font-bold mb-6">Appearance</h2>
+         <div>
+            <h3 className="font-semibold mb-2">Theme</h3>
+            <div className="flex space-x-4">
+                <ThemeOption label="Light" />
+                <ThemeOption label="Dim" />
+                <ThemeOption label="Dark" isActive={true} />
+            </div>
         </div>
-    );
-};
+    </div>
+);
 
-const SettingsPage: React.FC<SettingsPageProps> = ({ onLogout, settings, onSettingsChange }) => {
-    const [darkMode, setDarkMode] = useState(() => localStorage.getItem('theme') === 'dark');
+const SettingsField: React.FC<{label: string, value: string, type?: 'text' | 'textarea'}> = ({ label, value, type='text' }) => (
+    <div>
+        <label className="block text-sm font-medium text-text-secondary mb-1">{label}</label>
+        {type === 'text' ? (
+             <input type="text" readOnly value={value} className="w-full bg-secondary p-2 rounded-md" />
+        ) : (
+             <textarea readOnly value={value} rows={3} className="w-full bg-secondary p-2 rounded-md resize-none" />
+        )}
+    </div>
+)
 
-    useEffect(() => {
-        if (darkMode) {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-        }
-    }, [darkMode]);
-
-    const handleSettingChange = (key: keyof ThemeSettings, value: any) => {
-        onSettingsChange({ ...settings, [key]: value });
-    };
-
-    return (
-        <div className="bg-primary shadow-md rounded-xl p-6">
-            <header className="mb-8">
-                <h1 className="text-3xl font-bold text-text-primary">Settings</h1>
-            </header>
-
-            <SettingsSection title="Appearance">
-                 <SettingsItem icon="Moon" title="Dark Mode" description="Reduce eye strain and save battery life.">
-                    <Toggle enabled={darkMode} setEnabled={setDarkMode} />
-                </SettingsItem>
-                <SettingsItem icon="PaintBrush" title="Accent Color" description="Customize the main color of the user interface.">
-                    <AccentColorPicker currentHue={settings.accentHue} onHueChange={(hue) => handleSettingChange('accentHue', hue)} />
-                </SettingsItem>
-            </SettingsSection>
-            
-            <SettingsSection title="Accessibility">
-                <SettingsItem icon="Bars3BottomLeft" title="Font Size" description="Adjust the text size for better readability.">
-                    <FontSizeSelector currentSize={settings.fontSize} onSizeChange={(size) => handleSettingChange('fontSize', size)} />
-                </SettingsItem>
-                <SettingsItem icon="BoltSlash" title="Reduced Motion" description="Disables animations and motion effects.">
-                    <Toggle enabled={settings.reduceMotion} setEnabled={(val) => handleSettingChange('reduceMotion', val)} />
-                </SettingsItem>
-            </SettingsSection>
-
-            <SettingsSection title="Security & Login">
-                <SettingsItem icon="ShieldCheck" title="Two-Factor Authentication" description="Add an extra layer of security to your account.">
-                    <button className="text-sm font-semibold px-4 py-1.5 rounded-full border border-border-color hover:bg-secondary">Set Up</button>
-                </SettingsItem>
-                <div>
-                    <h3 className="font-semibold text-text-primary px-3 pt-4">Login Activity</h3>
-                    <p className="text-sm text-text-secondary px-3 pb-2">Your recent login sessions.</p>
-                    <div className="space-y-1">
-                        {loginActivity.map((activity: LoginActivity) => (
-                            <div key={activity.id} className="flex items-center p-3 rounded-lg hover:bg-secondary">
-                                <Icon name={activity.device.includes('iPhone') ? 'DevicePhoneMobile' : 'ComputerDesktop'} className="w-8 h-8 text-text-secondary"/>
-                                <div className="ml-4 flex-1">
-                                    <p className="font-semibold text-text-primary">{activity.device} {activity.isCurrent && <span className="text-xs text-green-500">(Current)</span>}</p>
-                                    <p className="text-sm text-text-secondary">{activity.location} · {activity.ipAddress}</p>
-                                    <p className="text-xs text-text-secondary">{format(new Date(activity.timestamp), "MMM d, yyyy 'at' h:mm a")}</p>
-                                </div>
-                                {!activity.isCurrent && <button className="text-sm text-red-500 font-semibold">Log Out</button>}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </SettingsSection>
-
-             <SettingsSection title="Session">
-                 <SettingsItem icon="ArrowLeftOnRectangle" title="Logout" description="Log out of your Nexus account on this device.">
-                    <button onClick={onLogout} className="text-sm text-red-500 font-semibold px-4 py-1.5 rounded-full hover:bg-red-500/10">Logout</button>
-                </SettingsItem>
-             </SettingsSection>
+const ToggleSetting: React.FC<{label: string, description: string}> = ({label, description}) => (
+    <div className="flex items-center justify-between p-3 bg-secondary rounded-lg">
+        <div>
+            <p className="font-semibold">{label}</p>
+            <p className="text-sm text-text-secondary">{description}</p>
         </div>
-    );
-};
+        <div className="w-12 h-6 bg-border-color rounded-full p-1 flex items-center cursor-pointer">
+            <div className="w-4 h-4 bg-white rounded-full shadow-md"></div>
+        </div>
+    </div>
+)
+
+const ThemeOption: React.FC<{label: string, isActive?: boolean}> = ({ label, isActive }) => (
+    <button className={`p-4 border-2 rounded-lg text-center ${isActive ? 'border-accent' : 'border-border-color'}`}>
+        <div className={`w-16 h-10 rounded-md ${label === 'Light' ? 'bg-gray-100' : label === 'Dim' ? 'bg-gray-700' : 'bg-black'}`}></div>
+        <p className="mt-2 font-semibold">{label}</p>
+    </button>
+)
 
 export default SettingsPage;

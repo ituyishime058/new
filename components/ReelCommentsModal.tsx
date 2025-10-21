@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 // FIX: Add file extension to import.
-import { comments } from '../constants.ts';
+import { comments } from '../constants';
 import Icon from './Icon';
 import Comment from './Comment';
 

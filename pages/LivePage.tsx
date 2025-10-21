@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { GoogleGenAI, LiveSession, LiveServerMessage, Modality } from "@google/genai";
 // FIX: Add file extension to import.
-import { nexusAiUser, currentUser } from '../constants.ts';
+import { nexusAiUser, currentUser } from '../constants';
 import * as AudioUtils from '../utils/audio';
 import Icon from '../components/Icon';
 import Avatar from '../components/Avatar';

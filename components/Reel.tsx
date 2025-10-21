@@ -1,7 +1,7 @@
 
 import React from 'react';
 // FIX: Add file extension to import.
-import { Reel as ReelType } from '../types.ts';
+import { Reel as ReelType } from '../types';
 import Icon from './Icon';
 import Avatar from './Avatar';
 import VideoPlayer from './VideoPlayer';

@@ -2,7 +2,7 @@
 import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
 // FIX: Add file extension to import.
-import type { Comment as CommentType } from '../types.ts';
+import type { Comment as CommentType } from '../types';
 import Avatar from './Avatar';
 
 interface CommentProps {

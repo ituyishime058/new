@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 // FIX: Add file extension to imports.
-import { conversations as initialConversations, nexusAiUser } from '../constants.ts';
+import { conversations as initialConversations, nexusAiUser } from '../constants';
 import { Conversation, User } from '../types.ts';
 import ChatView from '../components/ChatView';
 import Avatar from '../components/Avatar';

@@ -1,11 +1,11 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 // FIX: Add file extension to imports.
-import { Conversation, Message, User } from '../types.ts';
+import { Conversation, Message, User } from '../types';
 import { currentUser, nexusAiUser } from '../constants.ts';
 import Avatar from './Avatar';
 import Icon from './Icon';
-import { getAiChatResponse } from '../services/geminiService.ts';
+import { getAiChatResponse } from '../services/geminiService';
 import AudioCallModal from './AudioCallModal';
 import VideoCallModal from './VideoCallModal';
 import FileAttachment from './FileAttachment';

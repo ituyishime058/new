@@ -2,11 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 // FIX: Add file extension to imports.
-import { users as initialUsers, currentUser } from '../constants.ts';
+import { users as initialUsers, currentUser } from '../constants';
 import Icon from './Icon';
 import Avatar from './Avatar';
 // FIX: Add file extension to imports.
-import { User } from '../types.ts';
+import { User } from '../types';
 
 interface FollowListModalProps {
   isOpen: boolean;
