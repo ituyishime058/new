@@ -47,9 +47,9 @@ const AiImageEditor: React.FC<AiImageEditorProps> = ({ isOpen, onClose, imageFil
 
         try {
             const base64Data = await blobToBase64(imageFile);
-            const editedBase64 = await editImageWithAi(base64Data, imageFile.type, prompt);
-            const newImageUrl = `data:${imageFile.type};base64,${editedBase64}`;
-            onImageEdited(newImageUrl);
+            const editedImageString = await editImageWithAi(base64Data, imageFile.type, prompt);
+            // The service returns a full data URL, so we can use it directly
+            onImageEdited(editedImageString);
             onClose();
         } catch (e: any) {
             setError(e.message || "Failed to edit image.");

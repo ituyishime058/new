@@ -19,29 +19,15 @@ export interface Comment {
 }
 
 export interface PollOption {
-  id: string;
-  text: string;
-  votes: number;
+    id: string;
+    text: string;
+    votes: number;
 }
 
 export interface Poll {
-  id: string;
-  question: string;
-  options: PollOption[];
+    question: string;
+    options: PollOption[];
 }
-
-export interface Attachment {
-    type: 'image' | 'file' | 'video';
-    url: string;
-    fileName?: string;
-    fileSize?: string;
-}
-
-export interface VoiceNote {
-    url: string;
-    duration: number; // in seconds
-}
-
 
 export interface Post {
   id: string;
@@ -70,11 +56,16 @@ export interface Highlight {
   stories: Story[];
 }
 
-export interface Conversation {
-  id: string;
-  user: User;
-  messages: Message[];
-  unreadCount: number;
+export interface Attachment {
+    type: 'image' | 'file';
+    url: string;
+    fileName?: string;
+    fileSize?: string;
+}
+
+export interface VoiceNote {
+    url: string;
+    duration: number; // in seconds
 }
 
 export interface Message {
@@ -88,17 +79,16 @@ export interface Message {
   voiceNote?: VoiceNote;
 }
 
-export interface Notification {
+export interface Conversation {
   id: string;
-  type: 'like' | 'comment' | 'follow' | 'post';
   user: User;
-  post?: {
-    id: string;
-    content: string;
-  };
-  timestamp: string;
-  read: boolean;
-  message?: string;
+  messages: Message[];
+  unreadCount: number;
+}
+
+export interface Audio {
+    title: string;
+    artist: string;
 }
 
 export interface Reel {
@@ -106,13 +96,20 @@ export interface Reel {
     user: User;
     videoUrl: string;
     caption: string;
-    audio: {
-        title: string;
-        artist: string;
-    };
+    audio: Audio;
     likes: number;
     comments: number;
     shares: number;
+}
+
+export interface Notification {
+    id: string;
+    type: 'like' | 'comment' | 'follow' | 'post';
+    user: User;
+    post?: Post;
+    timestamp: string;
+    read: boolean;
+    message?: string;
 }
 
 export interface LoginActivity {
@@ -122,4 +119,10 @@ export interface LoginActivity {
     ipAddress: string;
     timestamp: string;
     isCurrent: boolean;
+}
+
+export interface TrendingTopic {
+    tag: string;
+    posts: number;
+    imageUrl: string;
 }

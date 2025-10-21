@@ -11,6 +11,7 @@ import ImageModal from './ImageModal';
 import Poll from './Poll';
 import ShareModal from './ShareModal';
 import ReactionPicker from './ReactionPicker';
+// FIX: Add file extension to imports.
 import { renderInteractiveText } from '../utils/textUtils.ts';
 
 interface PostProps {

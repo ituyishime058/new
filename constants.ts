@@ -1,202 +1,134 @@
 
-import { User, Post, Comment, Story, Highlight, Conversation, Notification, Reel, LoginActivity, PollOption, Poll } from './types.ts';
+import { User, Post, Comment, Story, Conversation, Message, Reel, Notification, Highlight, TrendingTopic, LoginActivity } from './types.ts';
 
 export const currentUser: User = {
   id: 'user-1',
-  name: 'You',
-  handle: 'you',
-  avatarUrl: '/avatars/avatar-1.jpg',
-  bio: 'Just a user trying to figure out this app. Frontend Engineer. Love React and TypeScript.',
-  followers: 1250,
-  following: 320,
+  name: 'Alex Johnson',
+  handle: 'alexj',
+  avatarUrl: '/avatars/alex.jpg',
+  isOnline: true,
+  bio: 'Frontend Developer | Coffee enthusiast ☕ | Building cool things on the web.',
+  followers: 1258,
+  following: 342,
 };
 
 export const nexusAiUser: User = {
-  id: 'user-ai',
-  name: 'Nexus AI',
-  handle: 'nexusai',
-  avatarUrl: '/avatars/avatar-ai.png',
-  bio: 'Your friendly neighborhood AI assistant, powered by Gemini.',
+    id: 'nexus-ai',
+    name: 'Nexus AI',
+    handle: 'nexusai',
+    avatarUrl: '/avatars/nexus-ai.png',
+    isOnline: true,
 };
-
 
 export const users: User[] = [
   currentUser,
-  {
-    id: 'user-2',
-    name: 'Jane Doe',
-    handle: 'janedoe',
-    avatarUrl: '/avatars/avatar-2.jpg',
-    isOnline: true,
-    isFollowing: true,
-  },
-  {
-    id: 'user-3',
-    name: 'John Smith',
-    handle: 'johnsmith',
-    avatarUrl: '/avatars/avatar-3.jpg',
-    isOnline: false,
-    isFollowing: true,
-  },
-  {
-    id: 'user-4',
-    name: 'Emily Jones',
-    handle: 'emilyjones',
-    avatarUrl: '/avatars/avatar-4.jpg',
-    isOnline: true,
-    isFollowing: false,
-  },
-  {
-    id: 'user-5',
-    name: 'Michael Brown',
-    handle: 'michaelbrown',
-    avatarUrl: '/avatars/avatar-5.jpg',
-    isOnline: false,
-    isFollowing: true,
-  },
-   {
-    id: 'user-6',
-    name: 'Sarah Miller',
-    handle: 'sarahmiller',
-    avatarUrl: '/avatars/avatar-6.jpg',
-    isOnline: true,
-    isFollowing: false,
-  },
+  { id: 'user-2', name: 'Maria Garcia', handle: 'mariag', avatarUrl: '/avatars/maria.jpg', isOnline: true, isFollowing: true },
+  { id: 'user-3', name: 'Kenji Tanaka', handle: 'kenjit', avatarUrl: '/avatars/kenji.jpg', isOnline: false, isFollowing: false },
+  { id: 'user-4', name: 'Fatima Ahmed', handle: 'fatimaa', avatarUrl: '/avatars/fatima.jpg', isOnline: true, isFollowing: true },
+  { id: 'user-5', name: 'Leo Carter', handle: 'leoc', avatarUrl: '/avatars/leo.jpg', isOnline: false, isFollowing: false },
+  { id: 'user-6', name: 'Chloe Kim', handle: 'chloek', avatarUrl: '/avatars/chloe.jpg', isOnline: true, isFollowing: false },
 ];
 
 export const comments: Comment[] = [
-  {
-    id: 'comment-1',
-    user: users[1],
-    text: 'This is amazing!',
-    timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-  },
-  {
-    id: 'comment-2',
-    user: users[2],
-    text: 'Great post!',
-    timestamp: new Date(Date.now() - 1000 * 60 * 10).toISOString(),
-  },
-  {
-    id: 'comment-3',
-    user: users[3],
-    text: 'I totally agree with this.',
-    timestamp: new Date(Date.now() - 1000 * 60 * 12).toISOString(),
-  },
+  { id: 'comment-1', user: users[2], text: 'This is amazing! Great shot.', timestamp: '2024-07-22T10:30:00Z' },
+  { id: 'comment-2', user: users[3], text: 'Love the color palette.', timestamp: '2024-07-22T10:32:00Z' },
+  { id: 'comment-3', user: users[1], text: 'Where was this taken?', timestamp: '2024-07-22T10:35:00Z' },
 ];
-
-const pollOptions1: PollOption[] = [
-    { id: 'poll-1-opt-1', text: 'React', votes: 120 },
-    { id: 'poll-1-opt-2', text: 'Vue', votes: 65 },
-    { id: 'poll-1-opt-3', text: 'Svelte', votes: 45 },
-    { id: 'poll-1-opt-4', text: 'Angular', votes: 30 },
-];
-const poll1: Poll = { id: 'poll-1', question: 'Which frontend framework is your favorite?', options: pollOptions1 };
-
 
 export const posts: Post[] = [
   {
     id: 'post-1',
     author: users[1],
-    content: 'Just enjoying a beautiful sunset. #nature #sunset',
-    timestamp: new Date(Date.now() - 1000 * 60 * 25).toISOString(),
+    content: 'Exploring the beautiful city of Kyoto! 🏯 The temples, the gardens, the food... everything is just perfect. #Kyoto #Japan #Travel',
+    timestamp: '2024-07-22T10:00:00Z',
     likes: 128,
-    comments: comments.slice(0,2),
-    imageUrl: '/posts/post-1.jpg',
+    comments: comments,
+    imageUrl: '/posts/kyoto.jpg',
     isBookmarked: true,
   },
   {
     id: 'post-2',
     author: users[2],
-    content: 'What is everyone building this weekend? I\'m working on a new side project with @you. #coding #devlife',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
+    content: 'Just finished a new 3D model. What do you guys think of this character design? Any feedback is welcome! @mariag what do you think? #3DArt #Blender #CharacterDesign',
+    timestamp: '2024-07-22T09:15:00Z',
     likes: 256,
-    comments: [comments[2]],
+    comments: [],
+    imageUrl: '/posts/3d-model.jpg',
   },
   {
     id: 'post-3',
-    author: users[3],
-    content: 'My new setup is finally complete! What do you think?',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 8).toISOString(),
-    likes: 512,
-    comments: [],
-    imageUrl: '/posts/post-2.jpg',
-  },
-   {
-    id: 'post-4',
     author: users[4],
-    content: 'Let\'s settle this! Which frontend framework do you prefer?',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
-    likes: 480,
+    content: 'Which laptop is better for programming in 2024?',
+    timestamp: '2024-07-21T18:45:00Z',
+    likes: 78,
     comments: [],
-    poll: poll1,
-    isBookmarked: true,
+    poll: {
+      question: 'Which laptop is better for programming?',
+      options: [
+        { id: 'opt-1', text: 'MacBook Pro M3', votes: 152 },
+        { id: 'opt-2', text: 'Dell XPS 15', votes: 89 },
+        { id: 'opt-3', text: 'ThinkPad X1 Carbon', votes: 64 },
+      ]
+    }
+  },
+  {
+    id: 'post-4',
+    author: users[3],
+    content: 'My new article on "The Future of AI in UX Design" is out now! Check it out and let me know your thoughts. #AI #UX #DesignThinking',
+    timestamp: '2024-07-21T15:20:00Z',
+    likes: 92,
+    comments: [],
   },
 ];
 
 export const stories: Story[] = [
-    { id: 'story-1', user: currentUser, imageUrl: '/stories/story-1.jpg', timestamp: new Date().toISOString(), duration: 10 },
-    { id: 'story-2', user: users[1], imageUrl: '/stories/story-2.jpg', timestamp: new Date().toISOString(), duration: 10 },
-    { id: 'story-3', user: users[2], imageUrl: '/stories/story-3.jpg', timestamp: new Date().toISOString(), duration: 10 },
-    { id: 'story-4', user: users[3], imageUrl: '/stories/story-4.jpg', timestamp: new Date().toISOString(), duration: 10 },
-    { id: 'story-5', user: users[4], imageUrl: '/stories/story-5.jpg', timestamp: new Date().toISOString(), duration: 10 },
-    { id: 'story-6', user: users[5], imageUrl: '/stories/story-6.jpg', timestamp: new Date().toISOString(), duration: 10 },
+  { id: 'story-1', user: currentUser, imageUrl: '/stories/alex-story.jpg', timestamp: '2024-07-22T11:00:00Z', duration: 5 },
+  { id: 'story-2', user: users[1], imageUrl: '/stories/maria-story.jpg', timestamp: '2024-07-22T10:45:00Z', duration: 7 },
+  { id: 'story-3', user: users[2], imageUrl: '/stories/kenji-story.jpg', timestamp: '2024-07-22T10:30:00Z', duration: 6 },
+  { id: 'story-4', user: users[3], imageUrl: '/stories/fatima-story.jpg', timestamp: '2024-07-22T09:00:00Z', duration: 8 },
+  { id: 'story-5', user: users[4], imageUrl: '/stories/leo-story.jpg', timestamp: '2024-07-22T08:15:00Z', duration: 5 },
 ];
 
 export const highlights: Highlight[] = [
-    { id: 'highlight-1', title: 'Travel', coverImageUrl: '/highlights/highlight-1.jpg', stories: stories.slice(0, 2) },
-    { id: 'highlight-2', title: 'Food', coverImageUrl: '/highlights/highlight-2.jpg', stories: [stories[2]] },
-    { id: 'highlight-3', title: 'Projects', coverImageUrl: '/highlights/highlight-3.jpg', stories: stories.slice(3, 5) },
+    { id: 'hl-1', title: 'Travel', coverImageUrl: '/highlights/travel.jpg', stories: [] },
+    { id: 'hl-2', title: 'Food', coverImageUrl: '/highlights/food.jpg', stories: [] },
+    { id: 'hl-3', title: 'Projects', coverImageUrl: '/highlights/projects.jpg', stories: [] },
+    { id: 'hl-4', title: 'Friends', coverImageUrl: '/highlights/friends.jpg', stories: [] },
+];
+
+const messages: Message[] = [
+    { id: 'm-1', sender: users[1], text: 'Hey, how are you?', timestamp: '2024-07-22T12:00:00Z', read: false },
+    { id: 'm-2', sender: currentUser, text: 'I am good, thanks for asking! Just working on a new project. What about you?', timestamp: '2024-07-22T12:01:00Z', read: true },
+    { id: 'm-3', sender: users[1], text: 'Sounds exciting! I am planning a trip to Italy. Any recommendations?', timestamp: '2024-07-22T12:02:00Z', read: false },
 ];
 
 export const conversations: Conversation[] = [
-  {
-    id: 'convo-ai',
-    user: nexusAiUser,
-    unreadCount: 0,
-    messages: [
-      { id: 'msg-ai-1', sender: nexusAiUser, text: 'Hello! I am Nexus AI. How can I help you today?', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), read: true },
-    ]
-  },
-  {
-    id: 'convo-1',
-    user: users[1],
-    unreadCount: 2,
-    messages: [
-      { id: 'msg-1-1', sender: users[1], text: 'Hey, did you see the latest news?', timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(), read: true },
-      { id: 'msg-1-2', sender: currentUser, text: 'No, what happened?', timestamp: new Date(Date.now() - 1000 * 60 * 28).toISOString(), read: true },
-      { id: 'msg-1-3', sender: users[1], text: 'Check out the tech channel!', timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(), read: false },
-    ]
-  },
-  {
-    id: 'convo-2',
-    user: users[3],
-    unreadCount: 0,
-    messages: [
-      { id: 'msg-2-1', sender: currentUser, text: 'Thanks for the help on that project!', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), read: true },
-    ]
-  }
-];
-
-export const notifications: Notification[] = [
-  { id: 'notif-1', type: 'like', user: users[2], post: { id: 'post-1', content: 'Just enjoying a beautiful sunset. #nature #sunset' }, timestamp: new Date().toISOString(), read: false },
-  { id: 'notif-2', type: 'follow', user: users[4], timestamp: new Date(Date.now() - 1000 * 60 * 60).toISOString(), read: false },
-  { id: 'notif-3', type: 'comment', user: users[1], post: { id: 'post-2', content: 'What is everyone building this weekend?' }, timestamp: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(), read: true },
+  { id: 'conv-ai', user: nexusAiUser, messages: [{ id: 'ai-m1', sender: nexusAiUser, text: "Hello! I'm Nexus AI. How can I help you today?", timestamp: '2024-07-22T11:00:00Z', read: true}], unreadCount: 0 },
+  { id: 'conv-1', user: users[1], messages: messages, unreadCount: 2 },
+  { id: 'conv-2', user: users[2], messages: [{ id: 'c2-m1', sender: users[2], text: 'Can you check out my new design?', timestamp: '2024-07-21T15:00:00Z', read: true}], unreadCount: 0 },
+  { id: 'conv-3', user: users[3], messages: [{ id: 'c3-m1', sender: currentUser, text: 'The article was great!', timestamp: '2024-07-21T18:00:00Z', read: true}], unreadCount: 0 },
 ];
 
 export const reels: Reel[] = [
-    { id: 'reel-1', user: users[1], videoUrl: '/reels/reel-1.mp4', caption: 'Amazing drone shots!', audio: { title: 'Upbeat Funk', artist: 'StockAudio' }, likes: 12345, comments: 245, shares: 123 },
-    { id: 'reel-2', user: users[3], videoUrl: '/reels/reel-2.mp4', caption: 'Cooking up a storm', audio: { title: 'Chill Lo-fi', artist: 'BeatMaster' }, likes: 5432, comments: 180, shares: 98 },
-    { id: 'reel-3', user: users[4], videoUrl: '/reels/reel-3.mp4', caption: 'My morning routine', audio: { title: 'Acoustic Sunrise', artist: 'IndieFolk' }, likes: 8765, comments: 312, shares: 210 },
+    { id: 'reel-1', user: users[5], videoUrl: '/reels/reel1.mp4', caption: 'Amazing drone shots from the mountains!', audio: { title: 'Adventure', artist: 'Cinematic Orchestra' }, likes: 12500, comments: 342, shares: 129 },
+    { id: 'reel-2', user: users[3], videoUrl: '/reels/reel2.mp4', caption: 'Cooking up a storm today! #chefmode', audio: { title: 'Sunny Day', artist: 'Upbeat Pop' }, likes: 8900, comments: 210, shares: 98 },
+    { id: 'reel-3', user: users[1], videoUrl: '/reels/reel3.mp4', caption: 'My morning workout routine 💪', audio: { title: 'Power Up', artist: 'Workout Mix' }, likes: 23100, comments: 889, shares: 451 },
+];
+
+export const notifications: Notification[] = [
+    { id: 'notif-1', type: 'like', user: users[2], post: posts[0], timestamp: '2024-07-22T11:05:00Z', read: false },
+    { id: 'notif-2', type: 'follow', user: users[4], timestamp: '2024-07-22T10:50:00Z', read: false },
+    { id: 'notif-3', type: 'comment', user: users[1], post: posts[0], timestamp: '2024-07-22T10:35:00Z', read: true },
+    { id: 'notif-4', type: 'like', user: users[3], post: posts[1], timestamp: '2024-07-22T09:45:00Z', read: true },
+];
+
+export const trendingTopics: TrendingTopic[] = [
+    { tag: 'TechInnovation', posts: 45200, imageUrl: '/trends/tech.jpg' },
+    { tag: 'SummerVibes', posts: 128000, imageUrl: '/trends/summer.jpg' },
+    { tag: 'WorldOfArt', posts: 89300, imageUrl: '/trends/art.jpg' },
 ];
 
 export const loginActivity: LoginActivity[] = [
-    { id: 'log-1', device: 'Chrome on macOS', location: 'San Francisco, CA', ipAddress: '192.168.1.1', timestamp: new Date().toISOString(), isCurrent: true },
-    { id: 'log-2', device: 'Nexus App on iPhone 15', location: 'New York, NY', ipAddress: '10.0.0.1', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2).toISOString(), isCurrent: false },
-];
-
-export const trendingTopics = [
-    { tag: 'Tech', posts: 125000, imageUrl: '/trending/tech.jpg' },
-    { tag: 'Photography', posts: 89000, imageUrl: '/trending/photography.jpg' },
-    { tag: 'Gaming', posts: 250000, imageUrl: '/trending/gaming.jpg' },
+    { id: 'la-1', device: 'Chrome on macOS', location: 'San Francisco, US', ipAddress: '192.168.1.1', timestamp: new Date().toISOString(), isCurrent: true },
+    { id: 'la-2', device: 'Nexus App on iPhone 15', location: 'New York, US', ipAddress: '10.0.0.1', timestamp: '2024-07-21T14:30:00Z', isCurrent: false },
 ];

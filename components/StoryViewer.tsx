@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+// FIX: Add file extension to import.
 import { Story } from '../types.ts';
 import Icon from './Icon.tsx';
 import Avatar from './Avatar.tsx';
@@ -19,22 +20,28 @@ const StoryViewer: React.FC<StoryViewerProps> = ({ stories, startIndex, onClose 
   const activeStory = stories[currentIndex];
 
   useEffect(() => {
-    setProgress(0);
-    const timer = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          if (currentIndex < stories.length - 1) {
-            setCurrentIndex(i => i + 1);
-          } else {
-            onClose();
-          }
-          return 0;
-        }
-        return prev + 100 / activeStory.duration;
-      });
-    }, 1000);
+    let timerId: number;
+    if (activeStory) {
+        setProgress(0);
+        // Interval is 100ms for smoother animation
+        const intervalDuration = 100; 
+        const progressIncrement = (intervalDuration / (activeStory.duration * 1000)) * 100;
 
-    return () => clearInterval(timer);
+        timerId = window.setInterval(() => {
+            setProgress(prev => {
+                if (prev >= 100) {
+                    if (currentIndex < stories.length - 1) {
+                        setCurrentIndex(i => i + 1);
+                    } else {
+                        onClose();
+                    }
+                    return 0;
+                }
+                return prev + progressIncrement;
+            });
+        }, intervalDuration);
+    }
+    return () => clearInterval(timerId);
   }, [currentIndex, stories, activeStory, onClose]);
 
   const goToNext = () => {
@@ -51,6 +58,9 @@ const StoryViewer: React.FC<StoryViewerProps> = ({ stories, startIndex, onClose 
     }
   };
 
+  if (!activeStory) {
+    return null;
+  }
 
   return (
     <AnimatePresence>
@@ -79,7 +89,7 @@ const StoryViewer: React.FC<StoryViewerProps> = ({ stories, startIndex, onClose 
               {stories.map((_, index) => (
                 <div key={index} className="flex-1 h-1 bg-white/30 rounded-full">
                   <div 
-                    className="h-full bg-white rounded-full" 
+                    className="h-full bg-white rounded-full transition-all duration-100 linear" 
                     style={{ width: index < currentIndex ? '100%' : index === currentIndex ? `${progress}%` : '0%' }}
                   />
                 </div>

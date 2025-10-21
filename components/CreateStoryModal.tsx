@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Icon from './Icon';
+// FIX: Add file extension to import.
 import { currentUser } from '../constants.ts';
 import Avatar from './Avatar';
 

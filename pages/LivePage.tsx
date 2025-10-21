@@ -31,8 +31,8 @@ const LivePage: React.FC = () => {
         });
         sessionPromise.current = null;
 
-        inputAudioContext.current?.close();
-        outputAudioContext.current?.close();
+        inputAudioContext.current?.close().catch(console.error);
+        outputAudioContext.current?.close().catch(console.error);
         
         scriptProcessor.current?.disconnect();
         mediaStreamSource.current?.disconnect();
@@ -72,8 +72,8 @@ const LivePage: React.FC = () => {
                 callbacks: {
                     onopen: async () => {
                         setConnectionState('connected');
-                        inputAudioContext.current = new ((window as any).AudioContext || (window as any).webkitAudioContext)({ sampleRate: 16000 });
-                        outputAudioContext.current = new ((window as any).AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
+                        inputAudioContext.current = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
+                        outputAudioContext.current = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
                         
                         mediaStream.current = await navigator.mediaDevices.getUserMedia({ audio: true });
                         mediaStreamSource.current = inputAudioContext.current.createMediaStreamSource(mediaStream.current);

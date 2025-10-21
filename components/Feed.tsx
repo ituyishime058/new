@@ -1,9 +1,12 @@
 
 import React, { useState } from 'react';
+// FIX: Add file extension to import.
 import { posts as initialPosts } from '../constants.ts';
+// FIX: Add file extension to import.
 import { Post as PostType, User } from '../types.ts';
 import CreatePost from './CreatePost.tsx';
 import Post from './Post.tsx';
+// FIX: Add file extension to import.
 import Stories from './Stories.tsx';
 
 interface FeedProps {

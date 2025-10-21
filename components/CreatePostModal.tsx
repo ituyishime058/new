@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+// FIX: Add file extension to import.
 import { currentUser } from '../constants.ts';
 import { Post } from '../types.ts';
 import Avatar from './Avatar.tsx';
