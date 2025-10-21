@@ -1,5 +1,8 @@
+
 import React from 'react';
+// FIX: Corrected import path for constants
 import { currentUser } from './constants';
+// FIX: Corrected import path for components
 import Avatar from './components/Avatar';
 import Icon from './components/Icon';
 

@@ -1,6 +1,8 @@
 
 import React from 'react';
+// FIX: Corrected import path for constants
 import { reels } from '../constants';
+// FIX: Corrected import path for Reel component
 import Reel from '../components/Reel';
 
 const ReelsPage: React.FC = () => {

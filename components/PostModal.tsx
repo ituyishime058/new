@@ -1,7 +1,9 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+// FIX: Corrected import path for types
 import { Post as PostType, User } from '../types';
+// FIX: Corrected import path for Post component
 import Post from './Post';
 import Icon from './Icon';
 

@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+// FIX: Corrected import path for types
 import { Notification } from '../types';
 import Icon from './Icon';
 

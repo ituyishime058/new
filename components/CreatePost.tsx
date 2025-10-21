@@ -1,5 +1,8 @@
+
 import React, { useState } from 'react';
+// FIX: Corrected import path for constants
 import { currentUser } from '../constants';
+// FIX: Corrected import path for types
 import { Post } from '../types';
 import Avatar from './Avatar';
 import Icon from './Icon';

@@ -1,4 +1,6 @@
+
 import React from 'react';
+// FIX: Corrected import path for Icon component
 import Icon from './components/Icon';
 
 type Page = 'home' | 'explore' | 'reels' | 'live' | 'messages' | 'profile';

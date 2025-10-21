@@ -1,15 +1,14 @@
+
 export interface User {
   id: string;
   name: string;
   handle: string;
   avatarUrl: string;
+  isOnline?: boolean;
+  isFollowing?: boolean;
   bio?: string;
   followers?: number;
   following?: number;
-  highlights?: Highlight[];
-  isFollowing?: boolean;
-  isVerified?: boolean;
-  isOnline?: boolean;
 }
 
 export interface Comment {
@@ -20,9 +19,9 @@ export interface Comment {
 }
 
 export interface PollOption {
-  id: string;
-  text: string;
-  votes: number;
+    id: string;
+    text: string;
+    votes: number;
 }
 
 export interface Poll {
@@ -43,15 +42,24 @@ export interface Post {
   comments: Comment[];
   isLiked?: boolean;
   isBookmarked?: boolean;
-  reactions?: { [key: string]: number };
 }
 
 export interface Story {
-  id:string;
-  user: User;
-  imageUrl: string;
-  duration: number; // in milliseconds
-  timestamp: string;
+    id: string;
+    user: User;
+    imageUrl: string;
+    timestamp: string;
+    duration: number;
+}
+
+export interface Notification {
+    id: string;
+    type: 'like' | 'comment' | 'follow' | 'post';
+    user: User;
+    post?: Post;
+    read: boolean;
+    timestamp: string;
+    message?: string;
 }
 
 export interface Message {
@@ -61,9 +69,9 @@ export interface Message {
   timestamp: string;
   read: boolean;
   replyTo?: Message;
-  attachment?: { 
-    type: 'image' | 'file'; 
-    url: string; 
+  attachment?: {
+    type: 'image' | 'file';
+    url: string;
     fileName?: string;
     fileSize?: string;
   };
@@ -80,32 +88,23 @@ export interface Conversation {
   unreadCount: number;
 }
 
-export interface Notification {
+export interface Reel {
   id: string;
-  type: 'like' | 'comment' | 'follow' | 'post' | 'mention';
   user: User;
-  post?: { content: string };
-  read: boolean;
-  timestamp: string;
-  message?: string;
+  videoUrl: string;
+  caption: string;
+  likes: number;
+  comments: number;
+  shares: number;
+  audio: {
+    title: string;
+    artist: string;
+  };
 }
 
 export interface Highlight {
-    id: string;
-    title: string;
-    coverUrl: string;
-}
-
-export interface Reel {
-    id: string;
-    user: User;
-    videoUrl: string;
-    caption: string;
-    audio: {
-        title: string;
-        artist: string;
-    };
-    likes: number;
-    comments: number;
-    shares: number;
+  id: string;
+  title: string;
+  coverImageUrl: string;
+  stories: Story[];
 }

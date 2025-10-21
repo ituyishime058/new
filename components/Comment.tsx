@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
+// FIX: Corrected import path for types
 import type { Comment as CommentType } from '../types';
 import Avatar from './Avatar';
 

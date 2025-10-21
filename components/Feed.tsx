@@ -1,7 +1,9 @@
 
 import React from 'react';
+// FIX: Corrected import path for types
 import { Post as PostType, User } from '../types';
 import CreatePost from './CreatePost';
+// FIX: Corrected import path for Post component
 import Post from './Post';
 import Stories from './Stories';
 

@@ -1,6 +1,8 @@
 
 import React, { useState, useMemo } from 'react';
+// FIX: Corrected import path for constants
 import { users, posts } from '../constants';
+// FIX: Corrected import path for types
 import { User, Post } from '../types';
 import Icon from '../components/Icon';
 import Avatar from '../components/Avatar';

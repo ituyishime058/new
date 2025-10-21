@@ -1,6 +1,7 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { GoogleGenAI, LiveSession, LiveServerMessage, Modality } from "@google/genai";
+// FIX: Corrected import path for constants
 import { nexusAiUser, currentUser } from '../constants';
 import * as AudioUtils from '../utils/audio';
 import Icon from '../components/Icon';

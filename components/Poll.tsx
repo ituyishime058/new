@@ -1,7 +1,8 @@
 
 import React, { useState, useMemo } from 'react';
-import { Poll as PollType, PollOption } from '../types';
-import { motion, AnimatePresence } from 'framer-motion';
+// FIX: Corrected import path for types
+import { Poll as PollType } from '../types';
+import { motion } from 'framer-motion';
 import Icon from './Icon';
 
 interface PollProps {

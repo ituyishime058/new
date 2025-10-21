@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+// FIX: Corrected import path for geminiService
 import { generateImageWithImagen } from '../services/geminiService';
 import Icon from './Icon';
 

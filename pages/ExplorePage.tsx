@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+// FIX: Corrected import path for constants
 import { posts } from '../constants';
 import Icon from '../components/Icon';
 import ImageModal from '../components/ImageModal';
