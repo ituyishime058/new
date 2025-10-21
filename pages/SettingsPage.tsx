@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Icon from '../components/Icon';
 
@@ -35,6 +34,7 @@ const Toggle: React.FC<{ enabled: boolean; setEnabled: (enabled: boolean) => voi
 
 const SettingsPage: React.FC<SettingsPageProps> = ({ onLogout }) => {
     const [emailNotifications, setEmailNotifications] = useState(true);
+    const [privateAccount, setPrivateAccount] = useState(false);
     const [darkMode, setDarkMode] = useState(() => localStorage.getItem('theme') === 'dark');
 
     useEffect(() => {
@@ -60,8 +60,14 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onLogout }) => {
                 <SettingsItem icon="Key" title="Change Password" description="It's a good idea to use a strong password that you're not using elsewhere.">
                     <button className="text-sm text-accent font-semibold px-4 py-1.5 rounded-md hover:bg-secondary">Change</button>
                 </SettingsItem>
-                <SettingsItem icon="ArrowLeftOnRectangle" title="Logout" description="Log out of your Nexus account on this device.">
-                    <button onClick={onLogout} className="text-sm text-red-500 font-semibold px-4 py-1.5 rounded-md hover:bg-red-500/10">Logout</button>
+            </SettingsSection>
+            
+            <SettingsSection title="Privacy & Safety">
+                 <SettingsItem icon="LockClosed" title="Private Account" description="When your account is private, only people you approve can see your posts.">
+                    <Toggle enabled={privateAccount} setEnabled={setPrivateAccount} />
+                </SettingsItem>
+                 <SettingsItem icon="UserGroup" title="Blocked Accounts" description="Manage the accounts you've blocked.">
+                     <button className="text-sm text-accent font-semibold px-4 py-1.5 rounded-md hover:bg-secondary">Manage</button>
                 </SettingsItem>
             </SettingsSection>
 
@@ -79,6 +85,21 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onLogout }) => {
                     <Toggle enabled={darkMode} setEnabled={setDarkMode} />
                 </SettingsItem>
             </SettingsSection>
+            
+             <SettingsSection title="Data Management">
+                 <SettingsItem icon="ArrowDownOnSquare" title="Download Your Data" description="Get a copy of your photos, posts, and other account information.">
+                    <button className="text-sm text-accent font-semibold px-4 py-1.5 rounded-md hover:bg-secondary">Request File</button>
+                </SettingsItem>
+                 <SettingsItem icon="Trash" title="Clear Cache" description="Clear locally cached data to free up space.">
+                    <button className="text-sm text-red-500 font-semibold px-4 py-1.5 rounded-md hover:bg-red-500/10">Clear</button>
+                </SettingsItem>
+            </SettingsSection>
+
+             <SettingsSection title="Session">
+                 <SettingsItem icon="ArrowLeftOnRectangle" title="Logout" description="Log out of your Nexus account on this device.">
+                    <button onClick={onLogout} className="text-sm text-red-500 font-semibold px-4 py-1.5 rounded-md hover:bg-red-500/10">Logout</button>
+                </SettingsItem>
+             </SettingsSection>
         </div>
     );
 };

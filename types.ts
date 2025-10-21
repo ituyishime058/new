@@ -7,6 +7,9 @@ export interface User {
   followers?: number;
   following?: number;
   highlights?: Highlight[];
+  isFollowing?: boolean;
+  isVerified?: boolean;
+  isOnline?: boolean;
 }
 
 export interface Comment {
@@ -39,6 +42,8 @@ export interface Post {
   likes: number;
   comments: Comment[];
   isLiked?: boolean;
+  isBookmarked?: boolean;
+  reactions?: { [key: string]: number };
 }
 
 export interface Story {
@@ -55,6 +60,17 @@ export interface Message {
   text: string;
   timestamp: string;
   read: boolean;
+  replyTo?: Message;
+  attachment?: { 
+    type: 'image' | 'file'; 
+    url: string; 
+    fileName?: string;
+    fileSize?: string;
+  };
+  voiceNote?: {
+    url: string;
+    duration: number; // in seconds
+  };
 }
 
 export interface Conversation {
@@ -66,7 +82,7 @@ export interface Conversation {
 
 export interface Notification {
   id: string;
-  type: 'like' | 'comment' | 'follow' | 'post';
+  type: 'like' | 'comment' | 'follow' | 'post' | 'mention';
   user: User;
   post?: { content: string };
   read: boolean;

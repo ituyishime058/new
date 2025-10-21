@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { conversations as initialConversations, nexusAiUser } from '../constants';
 import { Conversation, User } from '../types';
@@ -16,7 +15,7 @@ interface MessagesPageProps {
 const ConversationItem: React.FC<{ conversation: Conversation, isSelected: boolean, onSelect: () => void }> = ({ conversation, isSelected, onSelect }) => (
     <button onClick={onSelect} className={`w-full text-left p-4 flex items-center space-x-4 transition-colors ${isSelected ? 'bg-secondary' : 'hover:bg-secondary'}`}>
         <div className="relative">
-            <Avatar src={conversation.user.avatarUrl} alt={conversation.user.name} size="md" />
+            <Avatar src={conversation.user.avatarUrl} alt={conversation.user.name} size="md" isOnline={conversation.user.isOnline} />
             {conversation.unreadCount > 0 && conversation.user.id !== nexusAiUser.id && <span className="absolute top-0 right-0 block h-3 w-3 rounded-full bg-accent ring-2 ring-primary"></span>}
             {conversation.user.id === nexusAiUser.id && <span className="absolute bottom-0 right-0 block h-4 w-4 rounded-full bg-gradient-to-r from-accent-start to-accent-end ring-2 ring-primary flex items-center justify-center"><Icon name="Sparkles" variant="solid" className="w-2 h-2 text-white" /></span>}
         </div>
@@ -25,7 +24,7 @@ const ConversationItem: React.FC<{ conversation: Conversation, isSelected: boole
                 <p className="font-bold text-text-primary truncate">{conversation.user.name}</p>
                 <p className="text-xs text-text-secondary flex-shrink-0">{formatDistanceToNow(new Date(conversation.messages[conversation.messages.length - 1].timestamp), { addSuffix: true })}</p>
             </div>
-            <p className="text-sm text-text-secondary truncate">{conversation.messages[conversation.messages.length - 1].text}</p>
+            <p className="text-sm text-text-secondary truncate">{conversation.messages[conversation.messages.length - 1].text || 'Attachment'}</p>
         </div>
     </button>
 );

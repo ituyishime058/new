@@ -1,13 +1,33 @@
 import React from 'react';
-import { users } from '../constants';
+import { User } from '../types';
 import Avatar from './Avatar';
-import Icon from './Icon';
+import TrendingTopics from './TrendingTopics';
 
-const RightSidebar: React.FC = () => {
-  const suggestions = users.filter(u => u.id !== 'user-1' && u.id !== 'nexus-ai').slice(0, 4);
+interface RightSidebarProps {
+  users: User[];
+  onFollowToggle: (userId: string) => void;
+}
+
+const RightSidebar: React.FC<RightSidebarProps> = ({ users, onFollowToggle }) => {
+  const suggestions = users.filter(u => u.id !== 'nexus-ai' && !u.isFollowing).slice(0, 4);
+
+  const FollowButton: React.FC<{ user: User }> = ({ user }) => (
+    <button 
+      onClick={() => onFollowToggle(user.id)}
+      className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-colors w-28 ${
+        user.isFollowing 
+        ? 'bg-secondary text-text-primary border border-border-color' 
+        : 'bg-accent text-white hover:opacity-90'
+      }`}
+    >
+      {user.isFollowing ? 'Following' : 'Follow'}
+    </button>
+  );
 
   return (
     <div className="p-4 space-y-8 sticky top-20">
+      <TrendingTopics />
+
       {/* Friend Suggestions */}
       <div className="bg-primary p-4 rounded-xl shadow-sm">
         <h2 className="font-bold text-text-primary mb-4">Suggestions for you</h2>
@@ -15,34 +35,13 @@ const RightSidebar: React.FC = () => {
           {suggestions.map(user => (
             <div key={user.id} className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <Avatar src={user.avatarUrl} alt={user.name} size="md" />
+                <Avatar src={user.avatarUrl} alt={user.name} size="md" isOnline={user.isOnline} />
                 <div>
                   <p className="font-bold text-sm text-text-primary">{user.name}</p>
                   <p className="text-xs text-text-secondary">Suggested for you</p>
                 </div>
               </div>
-              <button className="text-accent text-sm font-semibold">Follow</button>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Active Friends */}
-      <div className="bg-primary p-4 rounded-xl shadow-sm">
-        <h2 className="font-bold text-text-primary mb-4">Active Now</h2>
-        <div className="space-y-4">
-          {users.slice(1, 4).map(user => (
-            <div key={user.id} className="flex items-center space-x-3">
-              <div className="relative">
-                <Avatar src={user.avatarUrl} alt={user.name} size="md" />
-                <span className="absolute bottom-0 right-0 block h-3 w-3 rounded-full bg-green-500 ring-2 ring-primary"></span>
-              </div>
-              <div>
-                <p className="font-bold text-sm text-text-primary">{user.name}</p>
-              </div>
-              <button className="ml-auto p-1 rounded-full hover:bg-secondary">
-                <Icon name="ChatBubbleOvalLeftEllipsis" className="w-5 h-5 text-text-secondary" />
-              </button>
+              <FollowButton user={user} />
             </div>
           ))}
         </div>

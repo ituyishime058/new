@@ -1,8 +1,7 @@
-
 import React from 'react';
 import Icon from './components/Icon';
 
-type Page = 'home' | 'explore' | 'reels' | 'messages' | 'profile';
+type Page = 'home' | 'explore' | 'reels' | 'live' | 'messages' | 'profile';
 
 interface BottomNavProps {
     onNavigate: (page: Page) => void;
@@ -42,6 +41,12 @@ const BottomNav: React.FC<BottomNavProps> = ({ onNavigate, currentPage }) => {
                         onNavigate={onNavigate}
                     />
                 ))}
+                 <button 
+                    onClick={() => onNavigate('live')} 
+                    className={`flex-1 flex justify-center p-2 rounded-full transition-colors text-white ${currentPage === 'live' ? 'bg-accent' : 'bg-gradient-to-r from-accent-start to-accent-end'}`}
+                >
+                    <Icon name="CubeTransparent" className="w-7 h-7" />
+                </button>
             </div>
         </div>
     );
