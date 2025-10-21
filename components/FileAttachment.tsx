@@ -2,7 +2,7 @@
 import React from 'react';
 // FIX: Add file extension to import.
 import { Message } from '../types.ts';
-import Icon from './Icon';
+import Icon from './Icon.tsx';
 
 interface FileAttachmentProps {
   attachment: NonNullable<Message['attachment']>;

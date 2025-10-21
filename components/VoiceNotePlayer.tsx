@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 // FIX: Add file extension to import.
 import { Message } from '../types.ts';
-import Icon from './Icon';
+import Icon from './Icon.tsx';
 
 interface VoiceNotePlayerProps {
   voiceNote: NonNullable<Message['voiceNote']>;

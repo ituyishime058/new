@@ -4,8 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 // FIX: Add file extension to imports.
 import { users, conversations } from '../constants.ts';
 import { User, Conversation } from '../types.ts';
-import Icon from './Icon';
-import Avatar from './Avatar';
+import Icon from './Icon.tsx';
+import Avatar from './Avatar.tsx';
 
 type Page = 'home' | 'profile' | 'notifications' | 'explore' | 'settings' | 'reels' | 'bookmarks' | 'live';
 
@@ -41,7 +41,7 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose, onNavi
         const filteredUsers = users.filter(u => u.name.toLowerCase().includes(q) || u.handle.toLowerCase().includes(q));
 
         return { actions: filteredActions, users: filteredUsers };
-    }, [query]);
+    }, [query, navigationActions, users]);
 
     const handleUserSelect = (user: User) => {
         const conversation = conversations.find(c => c.user.id === user.id);

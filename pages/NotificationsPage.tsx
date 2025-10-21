@@ -4,8 +4,8 @@ import { formatDistanceToNow } from 'date-fns';
 // FIX: Add file extension to imports.
 import { notifications as initialNotifications } from '../constants.ts';
 import { Notification } from '../types.ts';
-import Icon from '../components/Icon';
-import Avatar from '../components/Avatar';
+import Icon from '../components/Icon.tsx';
+import Avatar from '../components/Avatar.tsx';
 
 const NotificationItem: React.FC<{ notification: Notification }> = ({ notification }) => {
     const getIcon = () => {

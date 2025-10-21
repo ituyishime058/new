@@ -3,7 +3,7 @@ import React, { useState, useMemo } from 'react';
 // FIX: Add file extension to import.
 import { Poll as PollType } from '../types.ts';
 import { motion } from 'framer-motion';
-import Icon from './Icon';
+import Icon from './Icon.tsx';
 
 interface PollProps {
   pollData: PollType;

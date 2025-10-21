@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Icon from './Icon';
+import Icon from './Icon.tsx';
 // FIX: Add file extension to import.
 import { stories } from '../constants.ts'; // Mock data for story selection
 import { Story } from '../types.ts';

@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 // FIX: Add file extension to import.
 import { posts } from '../constants.ts';
-import Icon from '../components/Icon';
-import ImageModal from '../components/ImageModal';
-import AiImageGenerator from '../components/AiImageGenerator';
+import Icon from '../components/Icon.tsx';
+import ImageModal from '../components/ImageModal.tsx';
+import AiImageGenerator from '../components/AiImageGenerator.tsx';
 
 const ExplorePage: React.FC = () => {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);

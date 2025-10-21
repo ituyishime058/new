@@ -2,9 +2,9 @@
 import React from 'react';
 // FIX: Add file extension to import.
 import { Reel as ReelType } from '../types.ts';
-import Icon from './Icon';
-import Avatar from './Avatar';
-import VideoPlayer from './VideoPlayer';
+import Icon from './Icon.tsx';
+import Avatar from './Avatar.tsx';
+import VideoPlayer from './VideoPlayer.tsx';
 
 interface ReelProps {
   reel: ReelType;

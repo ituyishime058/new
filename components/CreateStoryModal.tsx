@@ -1,10 +1,10 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Icon from './Icon';
+import Icon from './Icon.tsx';
 // FIX: Add file extension to import.
 import { currentUser } from '../constants.ts';
-import Avatar from './Avatar';
+import Avatar from './Avatar.tsx';
 
 interface CreateStoryModalProps {
   isOpen: boolean;

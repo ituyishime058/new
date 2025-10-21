@@ -4,10 +4,10 @@ export interface User {
   handle: string;
   avatarUrl: string;
   isOnline?: boolean;
-  isFollowing?: boolean;
   followers?: number;
   following?: number;
   bio?: string;
+  isFollowing?: boolean;
 }
 
 export interface Comment {
@@ -35,27 +35,28 @@ export interface Post {
   content: string;
   timestamp: string;
   likes: number;
-  isLiked?: boolean;
   comments: Comment[];
   imageUrl?: string;
   poll?: Poll;
+  isLiked?: boolean;
   isBookmarked?: boolean;
 }
 
-export interface Story {
+export interface Notification {
   id: string;
+  type: 'like' | 'comment' | 'follow' | 'post';
   user: User;
-  imageUrl: string;
-  duration: number; // in seconds
-  isSeen?: boolean;
   timestamp: string;
+  read: boolean;
+  message?: string;
+  post?: Post;
 }
 
-export interface MessageAttachment {
-    type: 'image' | 'file';
-    url: string;
+export interface Attachment {
     fileName: string;
     fileSize: string;
+    url: string;
+    type: 'image' | 'video' | 'file';
 }
 
 export interface VoiceNote {
@@ -68,30 +69,32 @@ export interface Message {
   sender: User;
   text: string;
   timestamp: string;
-  read: boolean;
-  replyTo?: Message;
-  attachment?: MessageAttachment;
+  isRead: boolean;
+  reactions?: { [emoji: string]: string[] }; // emoji -> userIds
+  attachment?: Attachment;
   voiceNote?: VoiceNote;
 }
 
 export interface Conversation {
-  id: string;
+  id:string;
   user: User;
   messages: Message[];
   unreadCount: number;
+  isPinned: boolean;
+  isMuted: boolean;
+  isArchived?: boolean;
+  isGroup?: boolean;
+  groupName?: string;
+  participants?: User[];
 }
 
-export interface Notification {
+export interface Story {
   id: string;
-  type: 'like' | 'comment' | 'follow' | 'post';
   user: User;
+  imageUrl: string;
   timestamp: string;
-  read: boolean;
-  post?: {
-    id: string;
-    content: string;
-  };
-  message?: string;
+  duration: number; // in seconds
+  isSeen: boolean;
 }
 
 export interface Highlight {
@@ -100,26 +103,18 @@ export interface Highlight {
   coverImageUrl: string;
 }
 
-export interface ReelAudio {
-  title: string;
-  artist: string;
-}
-
 export interface Reel {
   id: string;
   user: User;
   videoUrl: string;
   caption: string;
-  audio: ReelAudio;
+  audio: {
+    title: string;
+    artist: string;
+  };
   likes: number;
   comments: number;
   shares: number;
-}
-
-export interface TrendingTopic {
-    tag: string;
-    posts: number;
-    imageUrl: string;
 }
 
 export interface LoginActivity {

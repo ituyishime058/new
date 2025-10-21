@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 // FIX: Add file extension to import.
 import { Post as PostType, User } from '../types.ts';
 import Post from './Post.tsx';
-import Icon from './Icon';
+import Icon from './Icon.tsx';
 
 interface PostModalProps {
   isOpen: boolean;

@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 // FIX: Add file extension to import.
 import { User } from '../types.ts';
-import Icon from './Icon';
-import Avatar from './Avatar';
+import Icon from './Icon.tsx';
+import Avatar from './Avatar.tsx';
 
 interface EditProfileModalProps {
   isOpen: boolean;

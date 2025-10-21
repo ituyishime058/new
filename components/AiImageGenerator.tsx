@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 // FIX: Add file extension to import.
-import { generateImageWithImagen } from '../services/geminiService';
-import Icon from './Icon';
+import { generateImageWithImagen } from '../services/geminiService.ts';
+import Icon from './Icon.tsx';
 
 const AiImageGenerator: React.FC = () => {
     const [prompt, setPrompt] = useState('');

@@ -3,7 +3,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 // FIX: Add file extension to import.
 import { Notification } from '../types.ts';
-import Icon from './Icon';
+import Icon from './Icon.tsx';
 
 interface NotificationToastProps {
   notification: Notification | null;

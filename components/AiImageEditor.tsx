@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Icon from './Icon';
+import Icon from './Icon.tsx';
 // FIX: Add file extension to import.
 import { editImageWithAi } from '../services/geminiService.ts';
 

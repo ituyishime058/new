@@ -2,7 +2,7 @@
 import React from 'react';
 // FIX: Add file extension to import.
 import { trendingTopics } from '../constants.ts';
-import Icon from './Icon';
+import Icon from './Icon.tsx';
 
 const TrendingTopics: React.FC = () => {
   return (

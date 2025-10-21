@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { User, Post as PostType } from '../types.ts';
 import { posts, highlights as mockHighlights, currentUser } from '../constants.ts';

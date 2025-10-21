@@ -3,8 +3,8 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 // FIX: Add file extension to import.
 import { comments } from '../constants.ts';
-import Icon from './Icon';
-import Comment from './Comment';
+import Icon from './Icon.tsx';
+import Comment from './Comment.tsx';
 
 interface ReelCommentsModalProps {
   isOpen: boolean;

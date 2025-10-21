@@ -3,9 +3,9 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { GoogleGenAI, LiveSession, LiveServerMessage, Modality } from "@google/genai";
 // FIX: Add file extension to import.
 import { nexusAiUser, currentUser } from '../constants.ts';
-import * as AudioUtils from '../utils/audio';
-import Icon from '../components/Icon';
-import Avatar from '../components/Avatar';
+import * as AudioUtils from '../utils/audio.ts';
+import Icon from '../components/Icon.tsx';
+import Avatar from '../components/Avatar.tsx';
 
 type ConversationTurn = {
     speaker: 'user' | 'model';
@@ -72,9 +72,7 @@ const LivePage: React.FC = () => {
                 callbacks: {
                     onopen: async () => {
                         setConnectionState('connected');
-                        // FIX: Cast window to `any` to support `webkitAudioContext` for older browsers without TypeScript errors.
                         inputAudioContext.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 16000 });
-                        // FIX: Cast window to `any` to support `webkitAudioContext` for older browsers without TypeScript errors.
                         outputAudioContext.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
                         
                         mediaStream.current = await navigator.mediaDevices.getUserMedia({ audio: true });

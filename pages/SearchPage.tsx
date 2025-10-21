@@ -3,8 +3,8 @@ import React, { useState, useMemo } from 'react';
 // FIX: Add file extension to imports.
 import { users, posts } from '../constants.ts';
 import { User, Post } from '../types.ts';
-import Icon from '../components/Icon';
-import Avatar from '../components/Avatar';
+import Icon from '../components/Icon.tsx';
+import Avatar from '../components/Avatar.tsx';
 
 interface SearchPageProps {
   onViewProfile: (user: User) => void;

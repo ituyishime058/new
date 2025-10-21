@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header.tsx';
 import LeftSidebar from './components/LeftSidebar.tsx';
 import RightSidebar from './components/RightSidebar.tsx';
 import BottomNav from './components/BottomNav.tsx';
 import Feed from './components/Feed.tsx';
+// FIX: Add file extension to import.
 import MessagesPage from './pages/MessagesPage.tsx';
 import ProfilePage from './pages/ProfilePage.tsx';
 import ExplorePage from './pages/ExplorePage.tsx';
@@ -15,7 +17,9 @@ import SearchPage from './pages/SearchPage.tsx';
 import LivePage from './pages/LivePage.tsx';
 import CommandPalette from './components/CommandPalette.tsx';
 import NotificationToast from './components/NotificationToast.tsx';
+// FIX: Add file extension to import.
 import { User, Post, Notification, Conversation } from './types.ts';
+// FIX: Add file extension to import.
 import { currentUser, posts as initialPosts } from './constants.ts';
 
 const App: React.FC = () => {

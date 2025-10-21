@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import Icon from '../components/Icon';
+import Icon from '../components/Icon.tsx';
 // FIX: Add file extension to import.
 import { Post as PostType, User } from '../types.ts';
 import Post from '../components/Post.tsx';

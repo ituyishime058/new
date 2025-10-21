@@ -3,10 +3,10 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 // FIX: Add file extension to imports.
 import { Post } from '../types.ts';
-import Icon from './Icon';
+import Icon from './Icon.tsx';
 // FIX: Add file extension to imports.
 import { users } from '../constants.ts';
-import Avatar from './Avatar';
+import Avatar from './Avatar.tsx';
 
 interface ShareModalProps {
   isOpen: boolean;
