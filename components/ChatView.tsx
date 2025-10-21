@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 // FIX: Add file extension to imports.
-import { Conversation, Message, User } from '../types';
+import { Conversation, Message, User } from '../types.ts';
 import { currentUser, nexusAiUser } from '../constants.ts';
 import Avatar from './Avatar';
 import Icon from './Icon';

@@ -3,6 +3,7 @@ import { User, Post as PostType } from '../types.ts';
 import { posts, highlights as mockHighlights, currentUser } from '../constants.ts';
 import Avatar from '../components/Avatar.tsx';
 import Icon from '../components/Icon.tsx';
+// FIX: Add file extension to import.
 import Post from '../components/Post.tsx';
 import EditProfileModal from '../components/EditProfileModal.tsx';
 import FollowListModal from '../components/FollowListModal.tsx';
@@ -102,7 +103,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, onNavigate, onViewProfi
         
         <div>
             {activeTab === 'posts' && userPosts.map(post => (
-                <Post key={post.id} post={post} onViewProfile={onViewProfile} />
+                <Post key={post.id} post={post} onViewProfile={onViewProfile} onUpdatePost={() => {}} />
             ))}
             {activeTab !== 'posts' && activeTab !== 'activity' && (
                 <div className="p-8 text-center text-text-secondary">

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Icon from './Icon';
 // FIX: Add file extension to import.
-import { stories } from '../constants'; // Mock data for story selection
+import { stories } from '../constants.ts'; // Mock data for story selection
 import { Story } from '../types.ts';
 
 interface CreateHighlightModalProps {

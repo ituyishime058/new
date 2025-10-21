@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 // FIX: Add file extension to imports.
-import { conversations as initialConversations, nexusAiUser } from '../constants';
+import { conversations as initialConversations, nexusAiUser } from '../constants.ts';
 import { Conversation, User } from '../types.ts';
 import ChatView from '../components/ChatView';
 import Avatar from '../components/Avatar';
@@ -43,7 +43,7 @@ const MessagesPage: React.FC<MessagesPageProps> = ({ onViewProfile }) => {
         } else if (conversations.length > 0) {
             setSelectedConversation(conversations[0]);
         }
-    }, []);
+    }, [conversations]);
 
     return (
         <div className="grid grid-cols-12 gap-0 bg-primary shadow-md rounded-xl overflow-hidden">

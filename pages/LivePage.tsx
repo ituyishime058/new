@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { GoogleGenAI, LiveSession, LiveServerMessage, Modality } from "@google/genai";
 // FIX: Add file extension to import.
-import { nexusAiUser, currentUser } from '../constants';
+import { nexusAiUser, currentUser } from '../constants.ts';
 import * as AudioUtils from '../utils/audio';
 import Icon from '../components/Icon';
 import Avatar from '../components/Avatar';
@@ -203,6 +203,12 @@ const LivePage: React.FC = () => {
                     <div className="flex items-center justify-center text-text-secondary py-2">
                         <Icon name="Microphone" className="w-5 h-5 text-red-500 animate-pulse" />
                         <span className="ml-2">Listening...</span>
+                    </div>
+                )}
+                 {connectionState === 'connected' && conversation.length === 0 && (
+                    <div className="flex items-center justify-center h-full text-text-secondary">
+                        <Icon name="Microphone" className="w-8 h-8 text-red-500 animate-pulse" />
+                        <span className="ml-2 text-lg">Listening...</span>
                     </div>
                 )}
             </div>

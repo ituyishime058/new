@@ -2,7 +2,7 @@
 import React from 'react';
 // FIX: Add file extension to import.
 import { Post as PostType, User } from '../types.ts';
-import Post from '../components/Post';
+import Post from '../components/Post.tsx';
 import Icon from '../components/Icon';
 
 interface BookmarksPageProps {

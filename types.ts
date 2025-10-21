@@ -5,9 +5,9 @@ export interface User {
   avatarUrl: string;
   isOnline?: boolean;
   isFollowing?: boolean;
-  bio?: string;
   followers?: number;
   following?: number;
+  bio?: string;
 }
 
 export interface Comment {
@@ -18,14 +18,15 @@ export interface Comment {
 }
 
 export interface PollOption {
-    id: string;
-    text: string;
-    votes: number;
+  id: string;
+  text: string;
+  votes: number;
 }
 
 export interface Poll {
-    question: string;
-    options: PollOption[];
+  id: string;
+  question: string;
+  options: PollOption[];
 }
 
 export interface Post {
@@ -34,6 +35,7 @@ export interface Post {
   content: string;
   timestamp: string;
   likes: number;
+  isLiked?: boolean;
   comments: Comment[];
   imageUrl?: string;
   poll?: Poll;
@@ -44,23 +46,16 @@ export interface Story {
   id: string;
   user: User;
   imageUrl: string;
-  timestamp: string;
   duration: number; // in seconds
   isSeen?: boolean;
+  timestamp: string;
 }
 
-export interface Highlight {
-  id: string;
-  title: string;
-  coverImageUrl: string;
-  stories: Story[];
-}
-
-export interface Attachment {
+export interface MessageAttachment {
     type: 'image' | 'file';
     url: string;
-    fileName?: string;
-    fileSize?: string;
+    fileName: string;
+    fileSize: string;
 }
 
 export interface VoiceNote {
@@ -75,7 +70,7 @@ export interface Message {
   timestamp: string;
   read: boolean;
   replyTo?: Message;
-  attachment?: Attachment;
+  attachment?: MessageAttachment;
   voiceNote?: VoiceNote;
 }
 
@@ -86,30 +81,45 @@ export interface Conversation {
   unreadCount: number;
 }
 
-export interface Audio {
-    title: string;
-    artist: string;
+export interface Notification {
+  id: string;
+  type: 'like' | 'comment' | 'follow' | 'post';
+  user: User;
+  timestamp: string;
+  read: boolean;
+  post?: {
+    id: string;
+    content: string;
+  };
+  message?: string;
+}
+
+export interface Highlight {
+  id: string;
+  title: string;
+  coverImageUrl: string;
+}
+
+export interface ReelAudio {
+  title: string;
+  artist: string;
 }
 
 export interface Reel {
-    id: string;
-    user: User;
-    videoUrl: string;
-    caption: string;
-    audio: Audio;
-    likes: number;
-    comments: number;
-    shares: number;
+  id: string;
+  user: User;
+  videoUrl: string;
+  caption: string;
+  audio: ReelAudio;
+  likes: number;
+  comments: number;
+  shares: number;
 }
 
-export interface Notification {
-    id: string;
-    type: 'like' | 'comment' | 'follow' | 'post';
-    user: User;
-    post?: Post;
-    timestamp: string;
-    read: boolean;
-    message?: string;
+export interface TrendingTopic {
+    tag: string;
+    posts: number;
+    imageUrl: string;
 }
 
 export interface LoginActivity {
@@ -117,12 +127,5 @@ export interface LoginActivity {
     device: string;
     location: string;
     ipAddress: string;
-    timestamp: string;
     isCurrent: boolean;
-}
-
-export interface TrendingTopic {
-    tag: string;
-    posts: number;
-    imageUrl: string;
 }

@@ -1,7 +1,7 @@
 
 import React from 'react';
 // FIX: Add file extension to import.
-import { trendingTopics } from '../constants';
+import { trendingTopics } from '../constants.ts';
 import Icon from './Icon';
 
 const TrendingTopics: React.FC = () => {

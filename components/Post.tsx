@@ -1,108 +1,89 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
-import { Post as PostType, User, Comment as CommentType } from '../types.ts';
-import { currentUser } from '../constants.ts';
+import { Post as PostType, User } from '../types.ts';
 import Avatar from './Avatar.tsx';
 import Icon from './Icon.tsx';
 import Comment from './Comment.tsx';
 import Poll from './Poll.tsx';
-import ShareModal from './ShareModal.tsx';
 import { renderInteractiveText } from '../utils/textUtils.ts';
-import ImageModal from './ImageModal.tsx';
 
 interface PostProps {
   post: PostType;
   onViewProfile: (user: User) => void;
-  onUpdatePost?: (post: PostType) => void;
+  onUpdatePost: (post: PostType) => void;
 }
 
-const Post: React.FC<PostProps> = ({ post, onViewProfile, onUpdatePost = () => {} }) => {
-    const [showComments, setShowComments] = useState(false);
-    const [isLiked, setIsLiked] = useState(false);
-    const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked || false);
-    const [isShareModalOpen, setShareModalOpen] = useState(false);
-    const [isImageModalOpen, setImageModalOpen] = useState(false);
+const Post: React.FC<PostProps> = ({ post, onViewProfile, onUpdatePost }) => {
+    const [isLiked, setIsLiked] = React.useState(post.isLiked);
+    const [likes, setLikes] = React.useState(post.likes);
+    const [isBookmarked, setIsBookmarked] = React.useState(post.isBookmarked);
 
     const handleLike = () => {
-        const newLikes = isLiked ? post.likes - 1 : post.likes + 1;
-        setIsLiked(!isLiked);
-        onUpdatePost({...post, likes: newLikes});
-    };
-
-    const handleBookmark = () => {
-        setIsBookmarked(!isBookmarked);
-        onUpdatePost({...post, isBookmarked: !isBookmarked});
-    };
+        const newIsLiked = !isLiked;
+        setIsLiked(newIsLiked);
+        setLikes(prev => newIsLiked ? prev + 1 : prev - 1);
+        onUpdatePost({ ...post, isLiked: newIsLiked, likes: newIsLiked ? post.likes + 1 : post.likes -1 });
+    }
     
+    const handleBookmark = () => {
+        const newIsBookmarked = !isBookmarked;
+        setIsBookmarked(newIsBookmarked);
+        onUpdatePost({ ...post, isBookmarked: newIsBookmarked });
+    }
+
     return (
-        <>
-        <article className="p-4 border-b border-border-color">
-            <div className="flex space-x-4">
-                <Avatar src={post.author.avatarUrl} alt={post.author.name} />
-                <div className="w-full">
+        <div className="bg-primary p-4 rounded-xl shadow-sm border-b border-border-color">
+            <div className="flex space-x-3">
+                <button onClick={() => onViewProfile(post.author)}>
+                    <Avatar src={post.author.avatarUrl} alt={post.author.name} />
+                </button>
+                <div className="flex-1">
                     <div className="flex items-baseline space-x-2">
-                        <button onClick={() => onViewProfile(post.author)} className="font-bold text-text-primary hover:underline">{post.author.name}</button>
-                        <span className="text-sm text-text-secondary">@{post.author.handle}</span>
-                        <span className="text-sm text-text-secondary">·</span>
-                        <span className="text-sm text-text-secondary hover:underline">{formatDistanceToNow(new Date(post.timestamp), { addSuffix: true })}</span>
+                         <button onClick={() => onViewProfile(post.author)} className="font-bold text-text-primary hover:underline">{post.author.name}</button>
+                         <p className="text-sm text-text-secondary">@{post.author.handle}</p>
+                         <span className="text-sm text-text-secondary">·</span>
+                         <p className="text-sm text-text-secondary">{formatDistanceToNow(new Date(post.timestamp), { addSuffix: true })}</p>
                     </div>
-                    <p className="text-text-primary mt-1 whitespace-pre-wrap">
-                        {renderInteractiveText(post.content, onViewProfile, (tag) => console.log(tag))}
-                    </p>
-                    
-                    {post.imageUrl && (
-                        <div className="mt-3 rounded-2xl border border-border-color overflow-hidden cursor-pointer" onClick={() => setImageModalOpen(true)}>
-                            <img src={post.imageUrl} alt="Post content" className="w-full object-cover" />
-                        </div>
-                    )}
-
-                    {post.poll && (
-                        <div className="mt-3">
-                            <Poll pollData={post.poll} />
-                        </div>
-                    )}
-
-                    <div className="flex justify-between items-center text-text-secondary mt-4">
-                        <button onClick={() => setShowComments(!showComments)} className="flex items-center space-x-2 hover:text-accent group">
-                            <Icon name="ChatBubbleOvalLeft" className="w-5 h-5" />
-                            <span className="text-sm">{post.comments.length}</span>
-                        </button>
-                        <button className="flex items-center space-x-2 hover:text-green-500 group">
-                            <Icon name="ArrowPathRoundedSquare" className="w-5 h-5" />
-                            <span className="text-sm">0</span>
-                        </button>
-                        <button onClick={handleLike} className={`flex items-center space-x-2 hover:text-red-500 group ${isLiked ? 'text-red-500' : ''}`}>
-                            <Icon name="Heart" variant={isLiked ? 'solid' : 'outline'} className="w-5 h-5" />
-                            <span className="text-sm">{isLiked ? post.likes + 1 : post.likes}</span>
-                        </button>
-                        <button onClick={() => setShareModalOpen(true)} className="hover:text-accent group">
-                            <Icon name="ArrowUpOnSquare" className="w-5 h-5" />
-                        </button>
-                        <button onClick={handleBookmark} className={`hover:text-accent group ${isBookmarked ? 'text-accent' : ''}`}>
-                            <Icon name="Bookmark" variant={isBookmarked ? 'solid' : 'outline'} className="w-5 h-5" />
-                        </button>
+                    <div className="mt-2 text-text-primary">
+                        {renderInteractiveText(post.content, onViewProfile, (tag) => console.log(`Clicked hashtag: #${tag}`))}
                     </div>
                 </div>
             </div>
-            {showComments && (
-                <div className="pl-14 pt-4 space-y-4">
-                    {post.comments.map(comment => <Comment key={comment.id} comment={comment} />)}
-                    {/* Add comment input */}
-                     <div className="flex items-start space-x-3 pt-4 border-t border-border-color/50">
-                        <Avatar src={currentUser.avatarUrl} alt={currentUser.name} size="sm" />
-                        <div className="w-full">
-                            <input
-                                placeholder={`Reply to @${post.author.handle}...`}
-                                className="w-full bg-secondary px-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-accent"
-                            />
-                        </div>
-                    </div>
+
+            <div className="mt-3 ml-12">
+                 {post.imageUrl && <img src={post.imageUrl} alt="Post content" className="rounded-lg border border-border-color max-h-96 w-full object-cover" />}
+                 {post.poll && <Poll pollData={post.poll} />}
+            </div>
+
+            <div className="mt-4 ml-12 flex justify-between items-center text-text-secondary">
+                <div className="flex space-x-6">
+                     <button onClick={handleLike} className={`flex items-center space-x-2 group ${isLiked ? 'text-red-500' : 'hover:text-red-500'}`}>
+                        <Icon name="Heart" className={`w-6 h-6 group-hover:text-red-500`} variant={isLiked ? 'solid' : 'outline'}/>
+                        <span>{likes}</span>
+                    </button>
+                    <button className="flex items-center space-x-2 hover:text-accent group">
+                        <Icon name="ChatBubbleOvalLeft" className="w-6 h-6 group-hover:text-accent"/>
+                        <span>{post.comments.length}</span>
+                    </button>
+                     <button className="flex items-center space-x-2 hover:text-green-500 group">
+                        <Icon name="ArrowPath" className="w-6 h-6 group-hover:text-green-500"/>
+                        <span>Repost</span>
+                    </button>
+                </div>
+                <div>
+                     <button onClick={handleBookmark} className={`flex items-center space-x-2 group ${isBookmarked ? 'text-accent' : 'hover:text-accent'}`}>
+                        <Icon name="Bookmark" className={`w-6 h-6 group-hover:text-accent`} variant={isBookmarked ? 'solid' : 'outline'}/>
+                    </button>
+                </div>
+            </div>
+            
+             {/* Comments Section (simplified) */}
+            {post.comments.length > 0 && (
+                <div className="mt-4 ml-12 border-t border-border-color pt-4">
+                     {post.comments.map(comment => <Comment key={comment.id} comment={comment} />)}
                 </div>
             )}
-        </article>
-        <ShareModal isOpen={isShareModalOpen} onClose={() => setShareModalOpen(false)} post={post} />
-        <ImageModal isOpen={isImageModalOpen} onClose={() => setImageModalOpen(false)} imageUrl={post.imageUrl || ''} />
-        </>
+        </div>
     );
 };
 

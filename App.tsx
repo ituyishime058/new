@@ -1,129 +1,126 @@
 import React, { useState, useEffect } from 'react';
-import { User, Post as PostType, Conversation, Notification as NotificationType } from './types.ts';
-import { currentUser, posts as initialPosts } from './constants.ts';
 import Header from './components/Header.tsx';
 import LeftSidebar from './components/LeftSidebar.tsx';
 import RightSidebar from './components/RightSidebar.tsx';
+import BottomNav from './components/BottomNav.tsx';
 import Feed from './components/Feed.tsx';
-import ProfilePage from './pages/ProfilePage.tsx';
 import MessagesPage from './pages/MessagesPage.tsx';
+import ProfilePage from './pages/ProfilePage.tsx';
 import ExplorePage from './pages/ExplorePage.tsx';
 import NotificationsPage from './pages/NotificationsPage.tsx';
 import ReelsPage from './pages/ReelsPage.tsx';
-import LivePage from './pages/LivePage.tsx';
 import SettingsPage from './pages/SettingsPage.tsx';
 import BookmarksPage from './pages/BookmarksPage.tsx';
 import SearchPage from './pages/SearchPage.tsx';
-import BottomNav from './components/BottomNav.tsx';
+import LivePage from './pages/LivePage.tsx';
 import CommandPalette from './components/CommandPalette.tsx';
 import NotificationToast from './components/NotificationToast.tsx';
-
-type Page = 'home' | 'explore' | 'reels' | 'live' | 'messages' | 'notifications' | 'profile' | 'settings' | 'bookmarks' | 'search';
+import { User, Post, Notification, Conversation } from './types.ts';
+import { currentUser, posts as initialPosts } from './constants.ts';
 
 const App: React.FC = () => {
-    const [currentPage, setCurrentPage] = useState<Page>('home');
-    const [viewedProfile, setViewedProfile] = useState<User | null>(null);
+    const [currentPage, setCurrentPage] = useState('home');
+    const [profileUser, setProfileUser] = useState<User | null>(null);
+    const [posts, setPosts] = useState<Post[]>(initialPosts);
     const [isCommandPaletteOpen, setCommandPaletteOpen] = useState(false);
-    const [posts, setPosts] = useState<PostType[]>(initialPosts);
-    const [toastNotification, setToastNotification] = useState<NotificationType | null>(null);
+    const [notification, setNotification] = useState<Notification | null>(null);
+    const [bookmarkedPosts, setBookmarkedPosts] = useState<Post[]>(posts.filter(p => p.isBookmarked));
 
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-                e.preventDefault();
-                setCommandPaletteOpen(isOpen => !isOpen);
-            }
-            if (e.key === 'Escape') {
-                setCommandPaletteOpen(false);
-            }
-        };
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, []);
-    
-    // Simulate a notification
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setToastNotification({
-                id: 'toast-1',
-                type: 'post',
-                user: currentUser,
-                timestamp: new Date().toISOString(),
-                read: false,
-                message: 'Your post was successfully published!',
-            });
-        }, 3000);
-        return () => clearTimeout(timer);
-    }, []);
-
-    const handleNavigate = (page: Page) => {
+    const handleNavigate = (page: string, user?: User) => {
+        if (page === 'profile' && user) {
+            setProfileUser(user);
+        } else if (page === 'profile' && !user) {
+            setProfileUser(currentUser);
+        } else {
+            setProfileUser(null);
+        }
         setCurrentPage(page);
-        setViewedProfile(null); // Reset profile view on navigation
-        window.scrollTo(0, 0);
     };
-
+    
     const handleViewProfile = (user: User) => {
-        setViewedProfile(user);
-        setCurrentPage('profile');
-        window.scrollTo(0, 0);
+        handleNavigate('profile', user);
+    };
+    
+    const handleNewPost = (post: Post) => {
+        setPosts(prev => [post, ...prev]);
+        setNotification({
+            id: `notif-${Date.now()}`,
+            type: 'post',
+            user: currentUser,
+            timestamp: new Date().toISOString(),
+            read: false,
+            message: "Your post was successfully published!"
+        });
+    };
+    
+    const handleUpdatePost = (updatedPost: Post) => {
+        setPosts(prev => prev.map(p => p.id === updatedPost.id ? updatedPost : p));
+        
+        // Update bookmarks if the post is bookmarked
+        if (updatedPost.isBookmarked) {
+            if (!bookmarkedPosts.find(p => p.id === updatedPost.id)) {
+                 setBookmarkedPosts(prev => [updatedPost, ...prev]);
+            }
+        } else {
+            setBookmarkedPosts(prev => prev.filter(p => p.id !== updatedPost.id));
+        }
     };
     
     const handleOpenChat = (conversation: Conversation) => {
-        // This would be more complex in a real app, maybe updating a global state
-        // For now, just navigate to messages
-        handleNavigate('messages');
-    }
+        // This would be more complex in a real app, but for now just navigate
+        setCurrentPage('messages');
+    };
 
-    const handleUpdatePost = (updatedPost: PostType) => {
-      setPosts(posts.map(p => p.id === updatedPost.id ? updatedPost : p));
-    }
-    
-    const renderPage = () => {
-        const targetProfile = viewedProfile || currentUser;
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+                event.preventDefault();
+                setCommandPaletteOpen(prev => !prev);
+            }
+            if (event.key === 'Escape') {
+                setCommandPaletteOpen(false);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
+    const renderContent = () => {
+        if (profileUser) {
+            return <ProfilePage user={profileUser} onNavigate={handleNavigate} onViewProfile={handleViewProfile} />;
+        }
         switch (currentPage) {
-            case 'home':
-                return <Feed onViewProfile={handleViewProfile} />;
-            case 'profile':
-                return <ProfilePage user={targetProfile} onNavigate={handleNavigate} onViewProfile={onViewProfile} />;
-            case 'messages':
-                return <MessagesPage onViewProfile={handleViewProfile} />;
-            case 'explore':
-                return <ExplorePage />;
-            case 'notifications':
-                return <NotificationsPage />;
-            case 'reels':
-                return <ReelsPage />;
-            case 'live':
-                return <LivePage />;
-            case 'settings':
-                return <SettingsPage />;
-            case 'bookmarks':
-                const bookmarkedPosts = posts.filter(p => p.isBookmarked);
-                return <BookmarksPage posts={bookmarkedPosts} onViewProfile={handleViewProfile} onUpdatePost={handleUpdatePost} />;
-            case 'search':
-                return <SearchPage onViewProfile={handleViewProfile} />;
-            default:
-                return <Feed onViewProfile={handleViewProfile} />;
+            case 'home': return <Feed posts={posts} onNewPost={handleNewPost} onViewProfile={handleViewProfile} onUpdatePost={handleUpdatePost}/>;
+            case 'messages': return <MessagesPage onViewProfile={handleViewProfile} />;
+            case 'explore': return <ExplorePage />;
+            case 'notifications': return <NotificationsPage />;
+            case 'reels': return <ReelsPage />;
+            case 'bookmarks': return <BookmarksPage posts={bookmarkedPosts} onViewProfile={handleViewProfile} onUpdatePost={handleUpdatePost} />;
+            case 'settings': return <SettingsPage />;
+            case 'search': return <SearchPage onViewProfile={handleViewProfile} />;
+            case 'live': return <LivePage />;
+            default: return <Feed posts={posts} onNewPost={handleNewPost} onViewProfile={handleViewProfile} onUpdatePost={handleUpdatePost} />;
         }
     };
 
     return (
         <div className="bg-background text-text-primary min-h-screen">
-            <Header onNavigate={handleNavigate} onSearchClick={() => setCommandPaletteOpen(true)} />
-            <main className="container mx-auto px-4 py-20 md:py-24 grid grid-cols-12 gap-8">
-                <div className="hidden md:block md:col-span-3">
+            <Header onNavigate={handleNavigate} onSearchClick={() => setCurrentPage('search')} />
+            <main className="container mx-auto px-4 grid grid-cols-12 gap-8 pt-20 pb-24 md:pb-8">
+                <aside className="hidden md:block md:col-span-3">
                     <LeftSidebar onNavigate={handleNavigate} currentPage={currentPage} />
-                </div>
+                </aside>
                 <div className="col-span-12 md:col-span-6">
-                    {renderPage()}
+                    {renderContent()}
                 </div>
-                <div className="hidden md:block md:col-span-3">
-                    <RightSidebar onViewProfile={handleViewProfile} />
-                </div>
+                <aside className="hidden md:block md:col-span-3 sticky top-20 h-[calc(100vh-6rem)]">
+                     <RightSidebar onViewProfile={handleViewProfile}/>
+                </aside>
             </main>
             <BottomNav onNavigate={handleNavigate} currentPage={currentPage} />
             <CommandPalette 
-                isOpen={isCommandPaletteOpen}
+                isOpen={isCommandPaletteOpen} 
                 onClose={() => setCommandPaletteOpen(false)}
                 onNavigate={(page) => {
                     handleNavigate(page);
@@ -138,7 +135,7 @@ const App: React.FC = () => {
                     setCommandPaletteOpen(false);
                 }}
             />
-             <NotificationToast notification={toastNotification} onClose={() => setToastNotification(null)} />
+             <NotificationToast notification={notification} onClose={() => setNotification(null)} />
         </div>
     );
 };

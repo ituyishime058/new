@@ -3,7 +3,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 // FIX: Add file extension to import.
 import { Post as PostType, User } from '../types.ts';
-import Post from './Post';
+import Post from './Post.tsx';
 import Icon from './Icon';
 
 interface PostModalProps {
@@ -33,7 +33,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, post, onViewProf
             className="w-full max-w-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <Post post={post} onViewProfile={onViewProfile} />
+            <Post post={post} onViewProfile={onViewProfile} onUpdatePost={() => {}}/>
           </motion.div>
           <button onClick={onClose} className="absolute top-4 right-4 text-white hover:text-gray-300">
             <Icon name="XMark" className="w-8 h-8" />

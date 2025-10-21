@@ -1,38 +1,26 @@
-
-import React, { useState } from 'react';
-// FIX: Add file extension to import.
-import { posts as initialPosts } from '../constants.ts';
-// FIX: Add file extension to import.
+import React from 'react';
 import { Post as PostType, User } from '../types.ts';
 import CreatePost from './CreatePost.tsx';
-import Post from './Post';
-// FIX: Add file extension to import.
-import Stories from './Stories';
+import Post from './Post.tsx';
+import Stories from './Stories.tsx';
 
 interface FeedProps {
-    onViewProfile: (user: User) => void;
+  posts: PostType[];
+  onNewPost: (post: PostType) => void;
+  onViewProfile: (user: User) => void;
+  onUpdatePost: (post: PostType) => void;
 }
 
-const Feed: React.FC<FeedProps> = ({ onViewProfile }) => {
-  const [posts, setPosts] = useState<PostType[]>(initialPosts);
-
-  const handleNewPost = (post: PostType) => {
-    setPosts(prevPosts => [post, ...prevPosts]);
-  };
-
-  const handleUpdatePost = (updatedPost: PostType) => {
-    setPosts(posts.map(p => p.id === updatedPost.id ? updatedPost : p));
-  }
-
+const Feed: React.FC<FeedProps> = ({ posts, onNewPost, onViewProfile, onUpdatePost }) => {
   return (
-    <div className="bg-primary shadow-md rounded-xl">
-      <Stories />
-      <CreatePost onNewPost={handleNewPost} />
-      <div>
-        {posts.map(post => (
-          <Post key={post.id} post={post} onViewProfile={onViewProfile} onUpdatePost={handleUpdatePost} />
-        ))}
+    <div className="space-y-4">
+      <div className="bg-primary shadow-md rounded-xl">
+        <Stories />
+        <CreatePost onNewPost={onNewPost} />
       </div>
+      {posts.map(post => (
+        <Post key={post.id} post={post} onViewProfile={onViewProfile} onUpdatePost={onUpdatePost} />
+      ))}
     </div>
   );
 };

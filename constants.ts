@@ -1,4 +1,4 @@
-import { User, Post, Comment, Story, Conversation, Message, Reel, Notification, Highlight, TrendingTopic, LoginActivity } from './types.ts';
+import { User, Post, Comment, Story, Conversation, Message, Notification, Highlight, Reel, TrendingTopic, LoginActivity } from './types.ts';
 
 export const currentUser: User = {
   id: 'user-1',
@@ -6,128 +6,132 @@ export const currentUser: User = {
   handle: 'alexj',
   avatarUrl: '/avatars/alex.jpg',
   isOnline: true,
-  bio: 'Frontend Developer | Coffee enthusiast ☕ | Building cool things on the web.',
   followers: 1258,
   following: 342,
+  bio: 'Frontend Developer | React & TypeScript Enthusiast | Exploring the web, one component at a time.',
 };
 
 export const nexusAiUser: User = {
-    id: 'nexus-ai',
-    name: 'Nexus AI',
-    handle: 'nexusai',
-    avatarUrl: '/avatars/nexus-ai.png',
-    isOnline: true,
+  id: 'nexus-ai',
+  name: 'Nexus AI',
+  handle: 'nexusai',
+  avatarUrl: '/avatars/nexus-ai.png',
+  isOnline: true,
 };
 
 export const users: User[] = [
   currentUser,
-  { id: 'user-2', name: 'Maria Garcia', handle: 'mariag', avatarUrl: '/avatars/maria.jpg', isOnline: true, isFollowing: true },
-  { id: 'user-3', name: 'Kenji Tanaka', handle: 'kenjit', avatarUrl: '/avatars/kenji.jpg', isOnline: false, isFollowing: false },
-  { id: 'user-4', name: 'Fatima Ahmed', handle: 'fatimaa', avatarUrl: '/avatars/fatima.jpg', isOnline: true, isFollowing: true },
-  { id: 'user-5', name: 'Leo Carter', handle: 'leoc', avatarUrl: '/avatars/leo.jpg', isOnline: false, isFollowing: false },
-  { id: 'user-6', name: 'Chloe Kim', handle: 'chloek', avatarUrl: '/avatars/chloe.jpg', isOnline: true, isFollowing: false },
+  { id: 'user-2', name: 'Bella Thorne', handle: 'bellat', avatarUrl: '/avatars/bella.jpg', isOnline: true, isFollowing: true },
+  { id: 'user-3', name: 'Chris Evans', handle: 'chrise', avatarUrl: '/avatars/chris.jpg', isOnline: false, isFollowing: false },
+  { id: 'user-4', name: 'Diana Prince', handle: 'dianap', avatarUrl: '/avatars/diana.jpg', isOnline: true, isFollowing: true },
+  { id: 'user-5', name: 'Ethan Hunt', handle: 'ethanh', avatarUrl: '/avatars/ethan.jpg', isOnline: false, isFollowing: false },
+  { id: 'user-6', name: 'Fiona Glenanne', handle: 'fionag', avatarUrl: '/avatars/fiona.jpg', isOnline: true, isFollowing: false },
 ];
 
 export const comments: Comment[] = [
-  { id: 'comment-1', user: users[2], text: 'This is amazing! Great shot.', timestamp: '2024-07-22T10:30:00Z' },
-  { id: 'comment-2', user: users[3], text: 'Love the color palette.', timestamp: '2024-07-22T10:32:00Z' },
-  { id: 'comment-3', user: users[1], text: 'Where was this taken?', timestamp: '2024-07-22T10:35:00Z' },
+  { id: 'comment-1', user: users[2], text: 'This looks amazing!', timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString() },
+  { id: 'comment-2', user: users[3], text: 'Wow, great shot!', timestamp: new Date(Date.now() - 1000 * 60 * 10).toISOString() },
+  { id: 'comment-3', user: users[1], text: 'I agree!', timestamp: new Date(Date.now() - 1000 * 60 * 2).toISOString() },
 ];
 
 export const posts: Post[] = [
   {
     id: 'post-1',
     author: users[1],
-    content: 'Exploring the beautiful city of Kyoto! 🏯 The temples, the gardens, the food... everything is just perfect. #Kyoto #Japan #Travel',
-    timestamp: '2024-07-22T10:00:00Z',
+    content: 'Just enjoying the beautiful sunset. #nature #travel',
+    timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
     likes: 128,
-    comments: comments,
-    imageUrl: '/posts/kyoto.jpg',
+    isLiked: true,
     isBookmarked: true,
+    comments: [comments[1]],
+    imageUrl: '/posts/sunset.jpg',
   },
   {
     id: 'post-2',
     author: users[2],
-    content: 'Just finished a new 3D model. What do you guys think of this character design? Any feedback is welcome! @mariag what do you think? #3DArt #Blender #CharacterDesign',
-    timestamp: '2024-07-22T09:15:00Z',
+    content: 'What should be the next feature we build for Nexus? #poll #dev',
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
     likes: 256,
-    comments: [],
-    imageUrl: '/posts/3d-model.jpg',
+    isLiked: false,
+    comments: [comments[0]],
+    poll: {
+      id: 'poll-1',
+      question: 'Next big feature?',
+      options: [
+        { id: 'opt-1', text: 'Live Video Streaming', votes: 120 },
+        { id: 'opt-2', text: 'Encrypted DMs', votes: 85 },
+        { id: 'opt-3', text: 'AI Post Summaries', votes: 51 },
+      ],
+    },
   },
   {
     id: 'post-3',
-    author: users[4],
-    content: 'Which laptop is better for programming in 2024?',
-    timestamp: '2024-07-21T18:45:00Z',
-    likes: 78,
+    author: currentUser,
+    content: 'Excited to share my new workspace setup! What do you all think?',
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 8).toISOString(),
+    likes: 54,
+    isLiked: false,
     comments: [],
-    poll: {
-      question: 'Which laptop is better for programming?',
-      options: [
-        { id: 'opt-1', text: 'MacBook Pro M3', votes: 152 },
-        { id: 'opt-2', text: 'Dell XPS 15', votes: 89 },
-        { id: 'opt-3', text: 'ThinkPad X1 Carbon', votes: 64 },
-      ]
-    }
+    imageUrl: '/posts/workspace.jpg',
   },
   {
     id: 'post-4',
-    author: users[3],
-    content: 'My new article on "The Future of AI in UX Design" is out now! Check it out and let me know your thoughts. #AI #UX #DesignThinking',
-    timestamp: '2024-07-21T15:20:00Z',
-    likes: 92,
+    author: users[4],
+    content: 'Just shipped a new update for our project management tool. Feeling productive! @alexj was a huge help.',
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
+    likes: 99,
+    isLiked: true,
     comments: [],
   },
 ];
 
 export const stories: Story[] = [
-  { id: 'story-1', user: currentUser, imageUrl: '/stories/alex-story.jpg', timestamp: '2024-07-22T11:00:00Z', duration: 5, isSeen: false },
-  { id: 'story-2', user: users[1], imageUrl: '/stories/maria-story.jpg', timestamp: '2024-07-22T10:45:00Z', duration: 7, isSeen: false },
-  { id: 'story-3', user: users[2], imageUrl: '/stories/kenji-story.jpg', timestamp: '2024-07-22T10:30:00Z', duration: 6, isSeen: true },
-  { id: 'story-4', user: users[3], imageUrl: '/stories/fatima-story.jpg', timestamp: '2024-07-22T09:00:00Z', duration: 8, isSeen: false },
-  { id: 'story-5', user: users[4], imageUrl: '/stories/leo-story.jpg', timestamp: '2024-07-22T08:15:00Z', duration: 5, isSeen: true },
+  { id: 'story-1', user: currentUser, imageUrl: '/stories/story-1.jpg', duration: 5, timestamp: new Date().toISOString() },
+  { id: 'story-2', user: users[1], imageUrl: '/stories/story-2.jpg', duration: 7, isSeen: false, timestamp: new Date().toISOString() },
+  { id: 'story-3', user: users[3], imageUrl: '/stories/story-3.jpg', duration: 5, isSeen: false, timestamp: new Date().toISOString() },
+  { id: 'story-4', user: users[4], imageUrl: '/stories/story-4.jpg', duration: 8, isSeen: true, timestamp: new Date().toISOString() },
 ];
 
-export const highlights: Highlight[] = [
-    { id: 'hl-1', title: 'Travel', coverImageUrl: '/highlights/travel.jpg', stories: [] },
-    { id: 'hl-2', title: 'Food', coverImageUrl: '/highlights/food.jpg', stories: [] },
-    { id: 'hl-3', title: 'Projects', coverImageUrl: '/highlights/projects.jpg', stories: [] },
-    { id: 'hl-4', title: 'Friends', coverImageUrl: '/highlights/friends.jpg', stories: [] },
+const sampleMessages: Message[] = [
+  { id: 'm1', sender: users[1], text: 'Hey, how are you?', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), read: true },
+  { id: 'm2', sender: currentUser, text: 'Doing great! Just working on the new Nexus feature.', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 23).toISOString(), read: true },
+  { id: 'm3', sender: users[1], text: 'Awesome! Can\'t wait to see it.', timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(), read: false },
 ];
 
-const messages: Message[] = [
-    { id: 'm-1', sender: users[1], text: 'Hey, how are you?', timestamp: '2024-07-22T12:00:00Z', read: false },
-    { id: 'm-2', sender: currentUser, text: 'I am good, thanks for asking! Just working on a new project. What about you?', timestamp: '2024-07-22T12:01:00Z', read: true },
-    { id: 'm-3', sender: users[1], text: 'Sounds exciting! I am planning a trip to Italy. Any recommendations?', timestamp: '2024-07-22T12:02:00Z', read: false },
+const aiMessages: Message[] = [
+    { id: 'ai-m1', sender: nexusAiUser, text: 'Hello Alex! How can I help you today?', timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(), read: true },
 ];
 
 export const conversations: Conversation[] = [
-  { id: 'conv-ai', user: nexusAiUser, messages: [{ id: 'ai-m1', sender: nexusAiUser, text: "Hello! I'm Nexus AI. How can I help you today?", timestamp: '2024-07-22T11:00:00Z', read: true}], unreadCount: 0 },
-  { id: 'conv-1', user: users[1], messages: messages, unreadCount: 2 },
-  { id: 'conv-2', user: users[2], messages: [{ id: 'c2-m1', sender: users[2], text: 'Can you check out my new design?', timestamp: '2024-07-21T15:00:00Z', read: true}], unreadCount: 0 },
-  { id: 'conv-3', user: users[3], messages: [{ id: 'c3-m1', sender: currentUser, text: 'The article was great!', timestamp: '2024-07-21T18:00:00Z', read: true}], unreadCount: 0 },
-];
-
-export const reels: Reel[] = [
-    { id: 'reel-1', user: users[5], videoUrl: '/reels/reel1.mp4', caption: 'Amazing drone shots from the mountains!', audio: { title: 'Adventure', artist: 'Cinematic Orchestra' }, likes: 12500, comments: 342, shares: 129 },
-    { id: 'reel-2', user: users[3], videoUrl: '/reels/reel2.mp4', caption: 'Cooking up a storm today! #chefmode', audio: { title: 'Sunny Day', artist: 'Upbeat Pop' }, likes: 8900, comments: 210, shares: 98 },
-    { id: 'reel-3', user: users[1], videoUrl: '/reels/reel3.mp4', caption: 'My morning workout routine 💪', audio: { title: 'Power Up', artist: 'Workout Mix' }, likes: 23100, comments: 889, shares: 451 },
+  { id: 'conv-ai', user: nexusAiUser, messages: aiMessages, unreadCount: 0 },
+  { id: 'conv-1', user: users[1], messages: sampleMessages, unreadCount: 1 },
+  { id: 'conv-2', user: users[3], messages: [{ id: 'm4', sender: users[3], text: 'Can you check out my latest post?', timestamp: new Date().toISOString(), read: false }], unreadCount: 1 },
+  { id: 'conv-3', user: users[4], messages: [{ id: 'm5', sender: users[4], text: 'Thanks for the help yesterday!', timestamp: new Date().toISOString(), read: true }], unreadCount: 0 },
 ];
 
 export const notifications: Notification[] = [
-    { id: 'notif-1', type: 'like', user: users[2], post: posts[0], timestamp: '2024-07-22T11:05:00Z', read: false },
-    { id: 'notif-2', type: 'follow', user: users[4], timestamp: '2024-07-22T10:50:00Z', read: false },
-    { id: 'notif-3', type: 'comment', user: users[1], post: posts[0], timestamp: '2024-07-22T10:35:00Z', read: true },
-    { id: 'notif-4', type: 'like', user: users[3], post: posts[1], timestamp: '2024-07-22T09:45:00Z', read: true },
+    { id: 'n-1', type: 'follow', user: users[5], timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(), read: false },
+    { id: 'n-2', type: 'like', user: users[2], post: { id: 'post-3', content: 'Excited to share my new workspace...'}, timestamp: new Date(Date.now() - 1000 * 60 * 60 * 1).toISOString(), read: false },
+    { id: 'n-3', type: 'comment', user: users[1], post: { id: 'post-1', content: 'Just enjoying the beautiful sunset...'}, timestamp: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(), read: true },
+];
+
+export const highlights: Highlight[] = [
+    { id: 'h-1', title: 'Travel', coverImageUrl: '/highlights/travel.jpg' },
+    { id: 'h-2', title: 'Food', coverImageUrl: '/highlights/food.jpg' },
+    { id: 'h-3', title: 'Projects', coverImageUrl: '/highlights/projects.jpg' },
+];
+
+export const reels: Reel[] = [
+    { id: 'r-1', user: users[4], videoUrl: '/reels/reel-1.mp4', caption: 'Exploring the city streets!', audio: { title: 'Uptown Funk', artist: 'Mark Ronson ft. Bruno Mars' }, likes: 12400, comments: 345, shares: 123 },
+    { id: 'r-2', user: users[2], videoUrl: '/reels/reel-2.mp4', caption: 'Morning coffee routine.', audio: { title: 'Sunday Best', artist: 'Surfaces' }, likes: 8900, comments: 210, shares: 98 },
 ];
 
 export const trendingTopics: TrendingTopic[] = [
-    { tag: 'TechInnovation', posts: 45200, imageUrl: '/trends/tech.jpg' },
-    { tag: 'SummerVibes', posts: 128000, imageUrl: '/trends/summer.jpg' },
-    { tag: 'WorldOfArt', posts: 89300, imageUrl: '/trends/art.jpg' },
+    { tag: 'TechEvent2024', posts: 12500, imageUrl: '/trending/tech.jpg' },
+    { tag: 'SummerVibes', posts: 88700, imageUrl: '/trending/summer.jpg' },
 ];
 
 export const loginActivity: LoginActivity[] = [
-    { id: 'la-1', device: 'Chrome on macOS', location: 'San Francisco, US', ipAddress: '192.168.1.1', timestamp: new Date().toISOString(), isCurrent: true },
-    { id: 'la-2', device: 'Nexus App on iPhone 15', location: 'New York, US', ipAddress: '10.0.0.1', timestamp: '2024-07-21T14:30:00Z', isCurrent: false },
+    { id: 'la-1', device: 'Chrome on macOS', location: 'San Francisco, CA', ipAddress: '192.168.1.1', isCurrent: true },
+    { id: 'la-2', device: 'Nexus App on iPhone 15', location: 'New York, NY', ipAddress: '10.0.0.1', isCurrent: false },
 ];

@@ -2,7 +2,7 @@
 import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
 // FIX: Add file extension to imports.
-import { notifications as initialNotifications } from '../constants';
+import { notifications as initialNotifications } from '../constants.ts';
 import { Notification } from '../types.ts';
 import Icon from '../components/Icon';
 import Avatar from '../components/Avatar';

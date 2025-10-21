@@ -1,8 +1,8 @@
 
 import React from 'react';
 // FIX: Add file extension to import.
-import { reels } from '../constants';
-import Reel from '../components/Reel';
+import { reels } from '../constants.ts';
+import Reel from '../components/Reel.tsx';
 
 const ReelsPage: React.FC = () => {
   return (
