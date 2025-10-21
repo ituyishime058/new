@@ -1,6 +1,5 @@
 
 import React from 'react';
-// FIX: Corrected import path for constants
 import { trendingTopics } from '../constants';
 import Icon from './Icon';
 

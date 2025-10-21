@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-// FIX: Corrected import path for types
 import { Message } from '../types';
 import Icon from './Icon';
 

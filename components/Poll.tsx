@@ -1,6 +1,5 @@
 
 import React, { useState, useMemo } from 'react';
-// FIX: Corrected import path for types
 import { Poll as PollType } from '../types';
 import { motion } from 'framer-motion';
 import Icon from './Icon';

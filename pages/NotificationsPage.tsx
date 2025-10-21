@@ -1,9 +1,7 @@
 
 import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
-// FIX: Corrected import path for constants
 import { notifications as initialNotifications } from '../constants';
-// FIX: Corrected import path for types
 import { Notification } from '../types';
 import Icon from '../components/Icon';
 import Avatar from '../components/Avatar';

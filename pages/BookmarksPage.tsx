@@ -1,8 +1,6 @@
 
 import React from 'react';
-// FIX: Corrected import path for types
 import { Post as PostType, User } from '../types';
-// FIX: Corrected import path for Post component
 import Post from '../components/Post';
 import Icon from '../components/Icon';
 
@@ -19,7 +17,7 @@ const BookmarksPage: React.FC<BookmarksPageProps> = ({ posts, onViewProfile, onU
             <Icon name="Bookmark" className="w-6 h-6 text-accent" />
             <h1 className="text-xl font-bold text-text-primary">Bookmarks</h1>
         </header>
-        <div>
+        <div className="space-y-4">
             {posts.length > 0 ? (
                 posts.map(post => (
                     <Post key={post.id} post={post} onViewProfile={onViewProfile} onUpdatePost={onUpdatePost} />

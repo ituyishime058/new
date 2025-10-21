@@ -1,10 +1,8 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-// FIX: Corrected import path for types
 import { Post } from '../types';
 import Icon from './Icon';
-// FIX: Corrected import path for constants
 import { users } from '../constants';
 import Avatar from './Avatar';
 

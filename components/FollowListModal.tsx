@@ -1,11 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-// FIX: Corrected import path for constants
 import { users as initialUsers, currentUser } from '../constants';
 import Icon from './Icon';
 import Avatar from './Avatar';
-// FIX: Corrected import path for types
 import { User } from '../types';
 
 interface FollowListModalProps {

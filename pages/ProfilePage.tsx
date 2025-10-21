@@ -72,7 +72,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, onBack, onViewProfile }
 
                 <div>
                     <h2 className="p-4 text-lg font-bold border-t border-border-color">Posts</h2>
-                    {userPosts.map(post => <Post key={post.id} post={post} onViewProfile={onViewProfile} />)}
+                    <div className="space-y-4">
+                        {userPosts.map(post => <Post key={post.id} post={post} onViewProfile={onViewProfile} />)}
+                    </div>
                 </div>
             </div>
 

@@ -1,9 +1,7 @@
 
 import React from 'react';
-// FIX: Corrected import path for types
 import { Post as PostType, User } from '../types';
 import CreatePost from './CreatePost';
-// FIX: Corrected import path for Post component
 import Post from './Post';
 import Stories from './Stories';
 
@@ -19,7 +17,7 @@ const Feed: React.FC<FeedProps> = ({ posts, onAddPost, onViewProfile, onUpdatePo
     <div>
       <Stories />
       <CreatePost onAddPost={onAddPost} />
-      <div className="bg-primary shadow-md rounded-xl overflow-hidden">
+      <div className="space-y-4">
         {posts.map(post => (
           <Post key={post.id} post={post} onViewProfile={onViewProfile} onUpdatePost={onUpdatePost} />
         ))}

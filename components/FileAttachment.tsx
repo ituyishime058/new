@@ -1,6 +1,5 @@
 
 import React from 'react';
-// FIX: Corrected import path for types
 import { Message } from '../types';
 import Icon from './Icon';
 

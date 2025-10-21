@@ -1,5 +1,5 @@
+
 import React, { useState, useEffect, useRef } from 'react';
-// FIX: Corrected import path for types
 import { Story } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
 import Icon from './Icon';

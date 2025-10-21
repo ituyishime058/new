@@ -1,9 +1,7 @@
 
 import React, { useState } from 'react';
 import Icon from '../components/Icon';
-// FIX: Corrected import path for types
 import { Post as PostType, User } from '../types';
-// FIX: Corrected import path for Post component
 import Post from '../components/Post';
 import { motion } from 'framer-motion';
 
@@ -41,7 +39,7 @@ const VaultPage: React.FC<VaultPageProps> = ({ posts, onViewProfile, onUpdatePos
             <TabButton tabName="ai" label="AI Creations" icon="Sparkles" />
         </div>
 
-        <div>
+        <div className="space-y-4">
             {activeTab === 'posts' && (
                 posts.length > 0 ? (
                     posts.map(post => (

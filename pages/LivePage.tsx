@@ -1,7 +1,6 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { GoogleGenAI, LiveSession, LiveServerMessage, Modality } from "@google/genai";
-// FIX: Corrected import path for constants
 import { nexusAiUser, currentUser } from '../constants';
 import * as AudioUtils from '../utils/audio';
 import Icon from '../components/Icon';
@@ -72,9 +71,7 @@ const LivePage: React.FC = () => {
                 callbacks: {
                     onopen: async () => {
                         setConnectionState('connected');
-                        // FIX: Cast window to any to support older browsers with webkitAudioContext
                         inputAudioContext.current = new ((window as any).AudioContext || (window as any).webkitAudioContext)({ sampleRate: 16000 });
-                        // FIX: Cast window to any to support older browsers with webkitAudioContext
                         outputAudioContext.current = new ((window as any).AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
                         
                         mediaStream.current = await navigator.mediaDevices.getUserMedia({ audio: true });

@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-// FIX: Corrected import path for types
 import { User } from '../types';
 import Icon from './Icon';
 import Avatar from './Avatar';

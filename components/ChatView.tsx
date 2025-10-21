@@ -1,12 +1,9 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-// FIX: Corrected import path for types
 import { Conversation, Message, User } from '../types';
-// FIX: Corrected import path for constants
 import { currentUser, nexusAiUser } from '../constants';
 import Avatar from './Avatar';
 import Icon from './Icon';
-// FIX: Corrected import path for geminiService
 import { getAiChatResponse } from '../services/geminiService';
 import AudioCallModal from './AudioCallModal';
 import VideoCallModal from './VideoCallModal';
