@@ -1,4 +1,3 @@
-
 import { User, Post, Comment, Story, Conversation, Message, Reel, Notification, Highlight, TrendingTopic, LoginActivity } from './types.ts';
 
 export const currentUser: User = {
@@ -82,11 +81,11 @@ export const posts: Post[] = [
 ];
 
 export const stories: Story[] = [
-  { id: 'story-1', user: currentUser, imageUrl: '/stories/alex-story.jpg', timestamp: '2024-07-22T11:00:00Z', duration: 5 },
-  { id: 'story-2', user: users[1], imageUrl: '/stories/maria-story.jpg', timestamp: '2024-07-22T10:45:00Z', duration: 7 },
-  { id: 'story-3', user: users[2], imageUrl: '/stories/kenji-story.jpg', timestamp: '2024-07-22T10:30:00Z', duration: 6 },
-  { id: 'story-4', user: users[3], imageUrl: '/stories/fatima-story.jpg', timestamp: '2024-07-22T09:00:00Z', duration: 8 },
-  { id: 'story-5', user: users[4], imageUrl: '/stories/leo-story.jpg', timestamp: '2024-07-22T08:15:00Z', duration: 5 },
+  { id: 'story-1', user: currentUser, imageUrl: '/stories/alex-story.jpg', timestamp: '2024-07-22T11:00:00Z', duration: 5, isSeen: false },
+  { id: 'story-2', user: users[1], imageUrl: '/stories/maria-story.jpg', timestamp: '2024-07-22T10:45:00Z', duration: 7, isSeen: false },
+  { id: 'story-3', user: users[2], imageUrl: '/stories/kenji-story.jpg', timestamp: '2024-07-22T10:30:00Z', duration: 6, isSeen: true },
+  { id: 'story-4', user: users[3], imageUrl: '/stories/fatima-story.jpg', timestamp: '2024-07-22T09:00:00Z', duration: 8, isSeen: false },
+  { id: 'story-5', user: users[4], imageUrl: '/stories/leo-story.jpg', timestamp: '2024-07-22T08:15:00Z', duration: 5, isSeen: true },
 ];
 
 export const highlights: Highlight[] = [

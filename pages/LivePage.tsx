@@ -72,8 +72,10 @@ const LivePage: React.FC = () => {
                 callbacks: {
                     onopen: async () => {
                         setConnectionState('connected');
-                        inputAudioContext.current = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
-                        outputAudioContext.current = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
+                        // FIX: Cast window to `any` to support `webkitAudioContext` for older browsers without TypeScript errors.
+                        inputAudioContext.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 16000 });
+                        // FIX: Cast window to `any` to support `webkitAudioContext` for older browsers without TypeScript errors.
+                        outputAudioContext.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
                         
                         mediaStream.current = await navigator.mediaDevices.getUserMedia({ audio: true });
                         mediaStreamSource.current = inputAudioContext.current.createMediaStreamSource(mediaStream.current);

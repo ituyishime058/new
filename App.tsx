@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header.tsx';
 import LeftSidebar from './components/LeftSidebar.tsx';
@@ -99,20 +98,20 @@ const App: React.FC = () => {
     };
 
     return (
-        <div className="bg-background text-text-primary min-h-screen">
+        <div className="bg-background text-text-primary h-screen flex flex-col">
             <Header onNavigate={handleNavigate} />
-            <main className="container mx-auto pt-20 pb-20 md:pb-4 px-2 md:px-4">
-                <div className="grid grid-cols-12 gap-4">
-                    <div className="hidden md:block md:col-span-3">
-                        <LeftSidebar onNavigate={handleNavigate} currentPage={currentPage} />
-                    </div>
-                    <div className="col-span-12 md:col-span-6">
-                        {renderPage()}
-                    </div>
-                    <div className="hidden md:block md:col-span-3">
-                        <RightSidebar onViewProfile={handleViewProfile} />
-                    </div>
+            <main className="container mx-auto flex-grow grid grid-cols-12 gap-4 overflow-hidden pt-4">
+                <aside className="hidden md:block md:col-span-3 overflow-y-auto scrollbar-hide pb-4">
+                    <LeftSidebar onNavigate={handleNavigate} currentPage={currentPage} />
+                </aside>
+                
+                <div className="col-span-12 md:col-span-6 overflow-y-auto scrollbar-hide pb-20 md:pb-4">
+                    {renderPage()}
                 </div>
+                
+                <aside className="hidden md:block md:col-span-3 overflow-y-auto scrollbar-hide pb-4">
+                    <RightSidebar onViewProfile={handleViewProfile} />
+                </aside>
             </main>
             <BottomNav onNavigate={handleNavigate} currentPage={currentPage} />
             <NotificationToast notification={notification} onClose={() => setNotification(null)} />

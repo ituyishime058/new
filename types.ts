@@ -1,4 +1,3 @@
-
 export interface User {
   id: string;
   name: string;
@@ -47,6 +46,7 @@ export interface Story {
   imageUrl: string;
   timestamp: string;
   duration: number; // in seconds
+  isSeen?: boolean;
 }
 
 export interface Highlight {

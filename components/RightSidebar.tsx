@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { users } from '../constants.ts';
 import { User } from '../types.ts';
@@ -34,13 +33,16 @@ const WhoToFollow: React.FC<RightSidebarProps> = ({ onViewProfile }) => {
                     </div>
                 ))}
             </div>
+             <button className="w-full text-left text-sm font-semibold text-accent mt-4 hover:underline">
+                See all
+            </button>
         </div>
     );
 };
 
 const RightSidebar: React.FC<RightSidebarProps> = ({ onViewProfile }) => {
   return (
-    <div className="space-y-4 sticky top-20">
+    <div className="space-y-4">
       <WhoToFollow onViewProfile={onViewProfile} />
       <TrendingTopics />
       <Spaces />
