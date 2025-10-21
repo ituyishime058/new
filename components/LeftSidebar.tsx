@@ -1,10 +1,11 @@
-
 import React from 'react';
+// FIX: Corrected import path for constants
 import { currentUser } from '../constants';
+// FIX: Corrected import path for components
 import Avatar from './Avatar';
 import Icon from './Icon';
 
-type Page = 'home' | 'explore' | 'reels' | 'messages' | 'notifications' | 'profile' | 'settings' | 'bookmarks' | 'live';
+type Page = 'home' | 'explore' | 'reels' | 'messages' | 'notifications' | 'profile' | 'settings' | 'bookmarks';
 
 interface LeftSidebarProps {
   onNavigate: (page: Page) => void;
@@ -39,7 +40,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ onNavigate, currentPage }) =>
         { icon: 'ChatBubbleOvalLeftEllipsis', label: 'Messages', page: 'messages' as Page },
         { icon: 'Bell', label: 'Notifications', page: 'notifications' as Page },
         { icon: 'Bookmark', label: 'Bookmarks', page: 'bookmarks' as Page},
-        { icon: 'CubeTransparent', label: 'Live AI', page: 'live' as Page },
+        { icon: 'UserCircle', label: 'Profile', page: 'profile' as Page },
     ];
 
     return (
@@ -58,13 +59,6 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ onNavigate, currentPage }) =>
                 </button>
             </div>
             <div className="mt-auto pb-4">
-                 <NavItem 
-                    icon="UserCircle"
-                    label="Profile"
-                    page="profile"
-                    isActive={currentPage === 'profile'}
-                    onNavigate={onNavigate}
-                />
                 <NavItem 
                     icon="Cog6Tooth"
                     label="Settings"
@@ -72,6 +66,13 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ onNavigate, currentPage }) =>
                     isActive={currentPage === 'settings'}
                     onNavigate={onNavigate}
                 />
+                <button onClick={() => onNavigate('profile')} className="w-full flex items-center space-x-3 p-2 mt-2 rounded-lg hover:bg-secondary">
+                    <Avatar src={currentUser.avatarUrl} alt={currentUser.name} size="md" />
+                    <div>
+                        <p className="font-bold text-text-primary">{currentUser.name}</p>
+                        <p className="text-sm text-text-secondary">@{currentUser.handle}</p>
+                    </div>
+                </button>
             </div>
         </div>
     );

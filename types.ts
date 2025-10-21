@@ -1,4 +1,3 @@
-
 export interface User {
   id: string;
   name: string;
@@ -107,4 +106,13 @@ export interface Highlight {
   title: string;
   coverImageUrl: string;
   stories: Story[];
+}
+
+export interface LoginActivity {
+    id: string;
+    device: string;
+    location: string;
+    ipAddress: string;
+    timestamp: string;
+    isCurrent: boolean;
 }

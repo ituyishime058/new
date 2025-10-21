@@ -1,5 +1,4 @@
-
-import { User, Post, Comment, Story, Notification, Conversation, Reel, Poll, Highlight } from './types';
+import { User, Post, Comment, Story, Notification, Conversation, Reel, Poll, Highlight, LoginActivity } from './types';
 
 // Current User
 export const currentUser: User = {
@@ -163,3 +162,8 @@ export const highlights: Highlight[] = [
     { id: 'hl-2', title: 'Food', coverImageUrl: '/highlights/food.jpg', stories: stories.slice(2,4) },
     { id: 'hl-3', title: 'Projects', coverImageUrl: '/highlights/projects.jpg', stories: stories.slice(4,5) },
 ];
+
+export const loginActivity: LoginActivity[] = [
+    { id: 'la-1', device: 'Chrome on Windows', location: 'New York, NY', ipAddress: '192.168.1.1', timestamp: new Date().toISOString(), isCurrent: true },
+    { id: 'la-2', device: 'Nexus App on iPhone 15', location: 'New York, NY', ipAddress: '192.168.1.2', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), isCurrent: false },
+    { id: 'la-3', device: 'Safari on MacBook Pro', location: 'Boston, MA', ipAddress: '192.168.1.3', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7).toISOString(), isCurrent: false },

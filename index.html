@@ -20,8 +20,12 @@
         border: 2px solid var(--scrollbar-track-color, #1e1e2e);
       }
       body {
-        --accent-start: #6366F1;
-        --accent-end: #A855F7;
+        --accent-hue: 231;
+        --accent-saturation: 60%;
+        --accent-lightness: 65%;
+        --accent-color: hsl(var(--accent-hue), var(--accent-saturation), var(--accent-lightness));
+        --accent-start: hsl(var(--accent-hue), var(--accent-saturation), 60%);
+        --accent-end: hsl(var(--accent-hue), calc(var(--accent-saturation) + 10%), 60%);
         --background-color: #f0f2f5;
         --primary-color: #ffffff;
         --secondary-color: #f0f2f5;
@@ -32,8 +36,7 @@
         --scrollbar-track-color: #f0f2f5;
       }
       html.dark body {
-        --accent-start: #818cf8;
-        --accent-end: #c084fc;
+        --accent-lightness: 55%;
         --background-color: #121212;
         --primary-color: #1e1e1e;
         --secondary-color: #2a2a2a;
@@ -60,6 +63,10 @@
         } else {
           document.documentElement.classList.remove('dark');
         }
+        const accentHue = localStorage.getItem('accentHue');
+        if (accentHue) {
+            document.body.style.setProperty('--accent-hue', accentHue);
+        }
       })();
     </script>
     <script>
@@ -75,7 +82,7 @@
                 'text-secondary': 'var(--text-secondary-color)',
                 'border-color': 'var(--border-color)',
                 accent: {
-                    DEFAULT: 'var(--accent-end)',
+                    DEFAULT: 'var(--accent-color)',
                     start: 'var(--accent-start)',
                     end: 'var(--accent-end)',
                 },
