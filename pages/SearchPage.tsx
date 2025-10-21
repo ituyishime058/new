@@ -1,7 +1,8 @@
 
 import React, { useState, useMemo } from 'react';
-import { users, posts } from '../constants';
-import { User, Post } from '../types';
+// FIX: Add file extension to imports.
+import { users, posts } from '../constants.ts';
+import { User, Post } from '../types.ts';
 import Icon from '../components/Icon';
 import Avatar from '../components/Avatar';
 

@@ -1,13 +1,15 @@
 
 import React, { useState } from 'react';
-import { User, Post as PostType } from '../types';
-import { posts, currentUser, highlights } from '../constants';
+// FIX: Add file extension to imports.
+import { User, Post as PostType } from '../types.ts';
+import { posts, currentUser, highlights } from '../constants.ts';
 import Avatar from '../components/Avatar';
 import Icon from '../components/Icon';
 import Post from '../components/Post';
 import EditProfileModal from '../components/EditProfileModal';
 import FollowListModal from '../components/FollowListModal';
-import Highlights from '../components/Highlights';
+// FIX: Add .tsx extension to component import
+import Highlights from '../components/Highlights.tsx';
 import ProfileActivityGraph from '../components/ProfileActivityGraph';
 
 interface ProfilePageProps {

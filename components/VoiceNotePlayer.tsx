@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Message } from '../types';
+// FIX: Add file extension to import.
+import { Message } from '../types.ts';
 import Icon from './Icon';
 
 interface VoiceNotePlayerProps {

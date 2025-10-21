@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
-import { Post as PostType, User } from '../types';
-import { currentUser } from '../constants';
+// FIX: Add file extension to imports.
+import { Post as PostType, User } from '../types.ts';
+import { currentUser } from '../constants.ts';
 import { formatDistanceToNow } from 'date-fns';
 import Avatar from './Avatar';
 import Icon from './Icon';
@@ -10,7 +11,7 @@ import ImageModal from './ImageModal';
 import Poll from './Poll';
 import ShareModal from './ShareModal';
 import ReactionPicker from './ReactionPicker';
-import { renderInteractiveText } from '../utils/textUtils';
+import { renderInteractiveText } from '../utils/textUtils.ts';
 
 interface PostProps {
   post: PostType;

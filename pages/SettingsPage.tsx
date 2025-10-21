@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import Icon from '../components/Icon';
-import { loginActivity, currentUser } from '../constants';
-import { LoginActivity } from '../types';
+// FIX: Add file extension to imports.
+import { loginActivity, currentUser } from '../constants.ts';
+import { LoginActivity } from '../types.ts';
 import { format } from 'date-fns';
 
 interface ThemeSettings {

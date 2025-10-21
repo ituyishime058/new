@@ -1,83 +1,81 @@
 
-import { GoogleGenAI, GenerateContentResponse, Modality } from "@google/genai";
+import { GoogleGenAI, GenerateContentResponse, Modality, Chat } from "@google/genai";
 
-// Always use new GoogleGenAI with named apiKey parameter
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Ensure the API key is handled by the environment.
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
 
+// In-memory chat sessions for demo purposes
+const chatSessions: Record<string, Chat> = {};
+
+/**
+ * Gets a chat response from the Gemini model.
+ */
 export const getAiChatResponse = async (conversationId: string, message: string): Promise<string> => {
-    try {
-        const model = 'gemini-2.5-flash'; // Basic text task
-        
-        // This is a simplified way to handle history. In a real app, you'd use the Chat API.
-        // For this function, we'll just use generateContent for simplicity.
-        const response = await ai.models.generateContent({
-            model,
-            contents: `User: ${message}`, // simplified for this function
-        });
-        
-        return response.text;
-    } catch (error) {
-        console.error("Error getting AI chat response:", error);
-        return "Sorry, I'm having trouble connecting to my brain right now. Please try again later.";
-    }
+  // FIX: Use a persistent chat session for each conversation
+  if (!chatSessions[conversationId]) {
+    chatSessions[conversationId] = ai.chats.create({
+      model: 'gemini-2.5-flash',
+    });
+  }
+  
+  const chat = chatSessions[conversationId];
+
+  const result = await chat.sendMessage({ message });
+  const text = result.text;
+  
+  return text;
 };
 
+/**
+ * Generates an image using the Imagen model.
+ */
 export const generateImageWithImagen = async (prompt: string): Promise<string> => {
-    try {
-        const model = 'imagen-4.0-generate-001'; // High-quality image generation
-        
-        const response = await ai.models.generateImages({
-            model,
-            prompt,
-            config: {
-                numberOfImages: 1,
-                outputMimeType: 'image/jpeg',
-                aspectRatio: '1:1',
-            },
-        });
+    const response = await ai.models.generateImages({
+        model: 'imagen-4.0-generate-001',
+        prompt: prompt,
+        config: {
+          numberOfImages: 1,
+          outputMimeType: 'image/jpeg',
+          aspectRatio: '1:1',
+        },
+    });
 
-        if (response.generatedImages && response.generatedImages.length > 0) {
-            const base64ImageBytes: string = response.generatedImages[0].image.imageBytes;
-            return `data:image/jpeg;base64,${base64ImageBytes}`;
-        } else {
-            throw new Error("No image was generated.");
-        }
-    } catch (error) {
-        console.error("Error generating image:", error);
-        throw new Error("Failed to generate image. Please try a different prompt.");
-    }
+    const base64ImageBytes: string = response.generatedImages[0].image.imageBytes;
+    return `data:image/jpeg;base64,${base64ImageBytes}`;
 };
 
+
+/**
+ * Edits an image using AI.
+ */
 export const editImageWithAi = async (base64ImageData: string, mimeType: string, prompt: string): Promise<string> => {
-    try {
-        const model = 'gemini-2.5-flash-image'; // General image editing
-
-        const imagePart = {
+    const response: GenerateContentResponse = await ai.models.generateContent({
+      model: 'gemini-2.5-flash-image',
+      contents: {
+        parts: [
+          {
             inlineData: {
-                data: base64ImageData,
-                mimeType: mimeType,
+              data: base64ImageData,
+              mimeType: mimeType,
             },
-        };
-        const textPart = { text: prompt };
+          },
+          {
+            text: prompt,
+          },
+        ],
+      },
+      config: {
+          responseModalities: [Modality.IMAGE],
+      },
+    });
 
-        const response: GenerateContentResponse = await ai.models.generateContent({
-            model,
-            contents: { parts: [imagePart, textPart] },
-            config: {
-                responseModalities: [Modality.IMAGE],
-            },
-        });
-
-        for (const part of response.candidates[0].content.parts) {
-            if (part.inlineData) {
-                return part.inlineData.data; // Return just the base64 string
-            }
+    for (const part of response.candidates[0].content.parts) {
+        if (part.inlineData) {
+            const base64ImageBytes: string = part.inlineData.data;
+            // The API returns just the base64 data, so we prepend the data URL scheme.
+            return `data:${mimeType};base64,${base64ImageBytes}`;
         }
-
-        throw new Error("No edited image was returned.");
-
-    } catch (error) {
-        console.error("Error editing image:", error);
-        throw new Error("Failed to edit image. The model may not have been able to fulfill the request.");
     }
+
+    throw new Error("No image was generated by the model.");
 };

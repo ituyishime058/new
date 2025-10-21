@@ -5,10 +5,10 @@ export interface User {
   handle: string;
   avatarUrl: string;
   isOnline?: boolean;
+  isFollowing?: boolean;
   bio?: string;
   followers?: number;
   following?: number;
-  isFollowing?: boolean;
 }
 
 export interface Comment {
@@ -25,10 +25,23 @@ export interface PollOption {
 }
 
 export interface Poll {
-    id: string;
-    question: string;
-    options: PollOption[];
+  id: string;
+  question: string;
+  options: PollOption[];
 }
+
+export interface Attachment {
+    type: 'image' | 'file' | 'video';
+    url: string;
+    fileName?: string;
+    fileSize?: string;
+}
+
+export interface VoiceNote {
+    url: string;
+    duration: number; // in seconds
+}
+
 
 export interface Post {
   id: string;
@@ -47,7 +60,7 @@ export interface Story {
   user: User;
   imageUrl: string;
   timestamp: string;
-  duration: number; // in milliseconds
+  duration: number; // in seconds
 }
 
 export interface Highlight {
@@ -57,25 +70,6 @@ export interface Highlight {
   stories: Story[];
 }
 
-export interface Message {
-  id: string;
-  sender: User;
-  text: string;
-  timestamp: string;
-  read: boolean;
-  replyTo?: Message;
-  attachment?: {
-    type: 'image' | 'file';
-    url: string;
-    fileName?: string;
-    fileSize?: string;
-  };
-  voiceNote?: {
-    url: string;
-    duration: number; // in seconds
-  };
-}
-
 export interface Conversation {
   id: string;
   user: User;
@@ -83,12 +77,24 @@ export interface Conversation {
   unreadCount: number;
 }
 
+export interface Message {
+  id: string;
+  sender: User;
+  text: string;
+  timestamp: string;
+  read: boolean;
+  replyTo?: Message;
+  attachment?: Attachment;
+  voiceNote?: VoiceNote;
+}
+
 export interface Notification {
   id: string;
   type: 'like' | 'comment' | 'follow' | 'post';
   user: User;
   post?: {
-      content: string;
+    id: string;
+    content: string;
   };
   timestamp: string;
   read: boolean;
@@ -116,10 +122,4 @@ export interface LoginActivity {
     ipAddress: string;
     timestamp: string;
     isCurrent: boolean;
-}
-
-export interface TrendingTopic {
-    tag: string;
-    posts: number;
-    imageUrl: string;
 }

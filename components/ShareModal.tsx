@@ -1,9 +1,10 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Post } from '../types';
+// FIX: Add file extension to imports.
+import { Post } from '../types.ts';
 import Icon from './Icon';
-import { users } from '../constants';
+import { users } from '../constants.ts';
 import Avatar from './Avatar';
 
 interface ShareModalProps {

@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
 import Icon from '../components/Icon';
-import { Post as PostType, User } from '../types';
+// FIX: Add file extension to import.
+import { Post as PostType, User } from '../types.ts';
 import Post from '../components/Post';
 import { motion } from 'framer-motion';
 

@@ -1,119 +1,202 @@
 
-import { User, Post, Comment, Story, Notification, Conversation, Reel, Poll, Highlight, LoginActivity, TrendingTopic } from './types';
+import { User, Post, Comment, Story, Highlight, Conversation, Notification, Reel, LoginActivity, PollOption, Poll } from './types.ts';
 
 export const currentUser: User = {
   id: 'user-1',
-  name: 'Alex Johnson',
-  handle: 'alexj',
-  avatarUrl: '/avatars/alex.jpg',
-  bio: 'Frontend Developer | Building cool things with React & TypeScript 🚀',
-  followers: 1258,
-  following: 342,
+  name: 'You',
+  handle: 'you',
+  avatarUrl: '/avatars/avatar-1.jpg',
+  bio: 'Just a user trying to figure out this app. Frontend Engineer. Love React and TypeScript.',
+  followers: 1250,
+  following: 320,
 };
 
 export const nexusAiUser: User = {
-    id: 'nexus-ai',
-    name: 'Nexus AI',
-    handle: 'nexusai',
-    avatarUrl: '/avatars/nexus-ai.png',
+  id: 'user-ai',
+  name: 'Nexus AI',
+  handle: 'nexusai',
+  avatarUrl: '/avatars/avatar-ai.png',
+  bio: 'Your friendly neighborhood AI assistant, powered by Gemini.',
 };
 
+
 export const users: User[] = [
-    currentUser,
-    { id: 'user-2', name: 'Samantha Bee', handle: 'sambee', avatarUrl: '/avatars/samantha.jpg', isOnline: true, isFollowing: true },
-    { id: 'user-3', name: 'Charlie Davis', handle: 'cdavis', avatarUrl: '/avatars/charlie.jpg', isOnline: false, isFollowing: false },
-    { id: 'user-4', name: 'Diana Prince', handle: 'di_prince', avatarUrl: '/avatars/diana.jpg', isOnline: true, isFollowing: true },
-    { id: 'user-5', name: 'Ethan Hunt', handle: 'ethanh', avatarUrl: '/avatars/ethan.jpg', isOnline: false, isFollowing: false },
-    { id: 'user-6', name: 'Fiona Glenanne', handle: 'fiona.g', avatarUrl: '/avatars/fiona.jpg', isOnline: true, isFollowing: true },
-    nexusAiUser,
+  currentUser,
+  {
+    id: 'user-2',
+    name: 'Jane Doe',
+    handle: 'janedoe',
+    avatarUrl: '/avatars/avatar-2.jpg',
+    isOnline: true,
+    isFollowing: true,
+  },
+  {
+    id: 'user-3',
+    name: 'John Smith',
+    handle: 'johnsmith',
+    avatarUrl: '/avatars/avatar-3.jpg',
+    isOnline: false,
+    isFollowing: true,
+  },
+  {
+    id: 'user-4',
+    name: 'Emily Jones',
+    handle: 'emilyjones',
+    avatarUrl: '/avatars/avatar-4.jpg',
+    isOnline: true,
+    isFollowing: false,
+  },
+  {
+    id: 'user-5',
+    name: 'Michael Brown',
+    handle: 'michaelbrown',
+    avatarUrl: '/avatars/avatar-5.jpg',
+    isOnline: false,
+    isFollowing: true,
+  },
+   {
+    id: 'user-6',
+    name: 'Sarah Miller',
+    handle: 'sarahmiller',
+    avatarUrl: '/avatars/avatar-6.jpg',
+    isOnline: true,
+    isFollowing: false,
+  },
 ];
 
 export const comments: Comment[] = [
-    { id: 'comment-1', user: users[2], text: 'This is amazing!', timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString() },
-    { id: 'comment-2', user: users[3], text: 'Great shot!', timestamp: new Date(Date.now() - 1000 * 60 * 10).toISOString() },
-    { id: 'comment-3', user: users[1], text: 'Love this!', timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString() },
-    { id: 'comment-4', user: users[4], text: 'Where was this taken?', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString() },
+  {
+    id: 'comment-1',
+    user: users[1],
+    text: 'This is amazing!',
+    timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
+  },
+  {
+    id: 'comment-2',
+    user: users[2],
+    text: 'Great post!',
+    timestamp: new Date(Date.now() - 1000 * 60 * 10).toISOString(),
+  },
+  {
+    id: 'comment-3',
+    user: users[3],
+    text: 'I totally agree with this.',
+    timestamp: new Date(Date.now() - 1000 * 60 * 12).toISOString(),
+  },
 ];
 
-const samplePoll: Poll = {
-  id: 'poll-1',
-  question: 'What should be the next big feature?',
-  options: [
-    { id: 'opt-1', text: 'Live Audio Spaces', votes: 120 },
-    { id: 'opt-2', text: 'Advanced AI Tools', votes: 256 },
-    { id: 'opt-3', text: 'E-commerce Integration', votes: 88 },
-  ]
-};
+const pollOptions1: PollOption[] = [
+    { id: 'poll-1-opt-1', text: 'React', votes: 120 },
+    { id: 'poll-1-opt-2', text: 'Vue', votes: 65 },
+    { id: 'poll-1-opt-3', text: 'Svelte', votes: 45 },
+    { id: 'poll-1-opt-4', text: 'Angular', votes: 30 },
+];
+const poll1: Poll = { id: 'poll-1', question: 'Which frontend framework is your favorite?', options: pollOptions1 };
+
 
 export const posts: Post[] = [
-    { id: 'post-1', author: users[1], content: 'Just enjoying a beautiful sunset. #nofilter #nature', imageUrl: '/posts/sunset.jpg', timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(), likes: 156, comments: [comments[0]], isBookmarked: true },
-    { id: 'post-2', author: users[2], content: 'Excited to share my latest project! It\'s a social media dashboard built with Next.js. Let me know what you think! @alexj #webdev #react', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(), likes: 320, comments: [comments[1], comments[2]] },
-    { id: 'post-3', author: users[3], content: 'What a game! Can\'t believe that last-minute goal. ⚽️ #soccer #sports', imageUrl: '/posts/soccer.jpg', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), likes: 88, comments: [], isBookmarked: true },
-    { id: 'post-4', author: users[0], content: 'Trying out the new poll feature. Cast your votes!', poll: samplePoll, timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2).toISOString(), likes: 42, comments: [] },
-    { id: 'post-5', author: users[4], content: 'Exploring the city streets. So much history in one place.', imageUrl: '/posts/city.jpg', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(), likes: 215, comments: [comments[3]] },
+  {
+    id: 'post-1',
+    author: users[1],
+    content: 'Just enjoying a beautiful sunset. #nature #sunset',
+    timestamp: new Date(Date.now() - 1000 * 60 * 25).toISOString(),
+    likes: 128,
+    comments: comments.slice(0,2),
+    imageUrl: '/posts/post-1.jpg',
+    isBookmarked: true,
+  },
+  {
+    id: 'post-2',
+    author: users[2],
+    content: 'What is everyone building this weekend? I\'m working on a new side project with @you. #coding #devlife',
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
+    likes: 256,
+    comments: [comments[2]],
+  },
+  {
+    id: 'post-3',
+    author: users[3],
+    content: 'My new setup is finally complete! What do you think?',
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 8).toISOString(),
+    likes: 512,
+    comments: [],
+    imageUrl: '/posts/post-2.jpg',
+  },
+   {
+    id: 'post-4',
+    author: users[4],
+    content: 'Let\'s settle this! Which frontend framework do you prefer?',
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
+    likes: 480,
+    comments: [],
+    poll: poll1,
+    isBookmarked: true,
+  },
 ];
 
 export const stories: Story[] = [
-    { id: 'story-1', user: users[1], imageUrl: '/stories/story1.jpg', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 1).toISOString(), duration: 5000 },
-    { id: 'story-2', user: users[2], imageUrl: '/stories/story2.jpg', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString(), duration: 7000 },
-    { id: 'story-3', user: users[3], imageUrl: '/stories/story3.jpg', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 8).toISOString(), duration: 6000 },
-    { id: 'story-4', user: users[4], imageUrl: '/stories/story4.jpg', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 12).toISOString(), duration: 5000 },
+    { id: 'story-1', user: currentUser, imageUrl: '/stories/story-1.jpg', timestamp: new Date().toISOString(), duration: 10 },
+    { id: 'story-2', user: users[1], imageUrl: '/stories/story-2.jpg', timestamp: new Date().toISOString(), duration: 10 },
+    { id: 'story-3', user: users[2], imageUrl: '/stories/story-3.jpg', timestamp: new Date().toISOString(), duration: 10 },
+    { id: 'story-4', user: users[3], imageUrl: '/stories/story-4.jpg', timestamp: new Date().toISOString(), duration: 10 },
+    { id: 'story-5', user: users[4], imageUrl: '/stories/story-5.jpg', timestamp: new Date().toISOString(), duration: 10 },
+    { id: 'story-6', user: users[5], imageUrl: '/stories/story-6.jpg', timestamp: new Date().toISOString(), duration: 10 },
 ];
 
 export const highlights: Highlight[] = [
-    { id: 'hl-1', title: 'Travel', coverImageUrl: '/highlights/travel.jpg', stories: [stories[0], stories[3]]},
-    { id: 'hl-2', title: 'Projects', coverImageUrl: '/highlights/projects.jpg', stories: [stories[1]]},
-    { id: 'hl-3', title: 'Food', coverImageUrl: '/highlights/food.jpg', stories: [stories[2]]},
-];
-
-export const notifications: Notification[] = [
-    { id: 'notif-1', type: 'like', user: users[1], post: { content: posts[3].content }, timestamp: new Date(Date.now() - 1000 * 60 * 2).toISOString(), read: false },
-    { id: 'notif-2', type: 'follow', user: users[4], timestamp: new Date(Date.now() - 1000 * 60 * 45).toISOString(), read: false },
-    { id: 'notif-3', type: 'comment', user: users[2], post: { content: posts[1].content }, timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), read: true },
-    { id: 'notif-4', type: 'like', user: users[3], post: { content: posts[3].content }, timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(), read: true },
+    { id: 'highlight-1', title: 'Travel', coverImageUrl: '/highlights/highlight-1.jpg', stories: stories.slice(0, 2) },
+    { id: 'highlight-2', title: 'Food', coverImageUrl: '/highlights/highlight-2.jpg', stories: [stories[2]] },
+    { id: 'highlight-3', title: 'Projects', coverImageUrl: '/highlights/highlight-3.jpg', stories: stories.slice(3, 5) },
 ];
 
 export const conversations: Conversation[] = [
-    {
-        id: 'convo-ai',
-        user: nexusAiUser,
-        unreadCount: 0,
-        messages: [
-            { id: 'ai-msg-1', sender: nexusAiUser, text: 'Hello! I am Nexus AI. How can I help you today?', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), read: true },
-        ],
-    },
-    {
-        id: 'convo-1',
-        user: users[1],
-        unreadCount: 2,
-        messages: [
-            { id: 'msg-1-1', sender: users[1], text: 'Hey, did you see the project update?', timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(), read: false },
-            { id: 'msg-1-2', sender: users[1], text: 'Let me know what you think!', timestamp: new Date(Date.now() - 1000 * 60 * 29).toISOString(), read: false },
-        ],
-    },
-    {
-        id: 'convo-2',
-        user: users[3],
-        unreadCount: 0,
-        messages: [
-            { id: 'msg-2-1', sender: currentUser, text: 'Great game last night!', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), read: true },
-            { id: 'msg-2-2', sender: users[3], text: 'Absolutely! That final play was insane.', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 23).toISOString(), read: true },
-        ],
-    },
+  {
+    id: 'convo-ai',
+    user: nexusAiUser,
+    unreadCount: 0,
+    messages: [
+      { id: 'msg-ai-1', sender: nexusAiUser, text: 'Hello! I am Nexus AI. How can I help you today?', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), read: true },
+    ]
+  },
+  {
+    id: 'convo-1',
+    user: users[1],
+    unreadCount: 2,
+    messages: [
+      { id: 'msg-1-1', sender: users[1], text: 'Hey, did you see the latest news?', timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(), read: true },
+      { id: 'msg-1-2', sender: currentUser, text: 'No, what happened?', timestamp: new Date(Date.now() - 1000 * 60 * 28).toISOString(), read: true },
+      { id: 'msg-1-3', sender: users[1], text: 'Check out the tech channel!', timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(), read: false },
+    ]
+  },
+  {
+    id: 'convo-2',
+    user: users[3],
+    unreadCount: 0,
+    messages: [
+      { id: 'msg-2-1', sender: currentUser, text: 'Thanks for the help on that project!', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), read: true },
+    ]
+  }
+];
+
+export const notifications: Notification[] = [
+  { id: 'notif-1', type: 'like', user: users[2], post: { id: 'post-1', content: 'Just enjoying a beautiful sunset. #nature #sunset' }, timestamp: new Date().toISOString(), read: false },
+  { id: 'notif-2', type: 'follow', user: users[4], timestamp: new Date(Date.now() - 1000 * 60 * 60).toISOString(), read: false },
+  { id: 'notif-3', type: 'comment', user: users[1], post: { id: 'post-2', content: 'What is everyone building this weekend?' }, timestamp: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(), read: true },
 ];
 
 export const reels: Reel[] = [
-    { id: 'reel-1', user: users[4], videoUrl: '/videos/reel1.mp4', caption: 'Dancing in the rain!', audio: { title: 'Upbeat Funk', artist: 'StockMusic' }, likes: 12345, comments: 245, shares: 120 },
-    { id: 'reel-2', user: users[5], videoUrl: '/videos/reel2.mp4', caption: 'My new puppy is the cutest.', audio: { title: 'Cute Moments', artist: 'StockMusic' }, likes: 54321, comments: 1234, shares: 879 },
-];
-
-export const trendingTopics: TrendingTopic[] = [
-    { tag: 'TechConference2024', posts: 12500, imageUrl: '/trending/tech.jpg' },
-    { tag: 'SummerVibes', posts: 89000, imageUrl: '/trending/summer.jpg' },
-    { tag: 'NewMusicFriday', posts: 42300, imageUrl: '/trending/music.jpg' },
+    { id: 'reel-1', user: users[1], videoUrl: '/reels/reel-1.mp4', caption: 'Amazing drone shots!', audio: { title: 'Upbeat Funk', artist: 'StockAudio' }, likes: 12345, comments: 245, shares: 123 },
+    { id: 'reel-2', user: users[3], videoUrl: '/reels/reel-2.mp4', caption: 'Cooking up a storm', audio: { title: 'Chill Lo-fi', artist: 'BeatMaster' }, likes: 5432, comments: 180, shares: 98 },
+    { id: 'reel-3', user: users[4], videoUrl: '/reels/reel-3.mp4', caption: 'My morning routine', audio: { title: 'Acoustic Sunrise', artist: 'IndieFolk' }, likes: 8765, comments: 312, shares: 210 },
 ];
 
 export const loginActivity: LoginActivity[] = [
-    { id: 'la-1', device: 'Chrome on macOS', location: 'New York, NY', ipAddress: '192.168.1.1', timestamp: new Date().toISOString(), isCurrent: true },
-    { id: 'la-2', device: 'Nexus App on iPhone 15', location: 'New York, NY', ipAddress: '192.168.1.1', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), isCurrent: false },
+    { id: 'log-1', device: 'Chrome on macOS', location: 'San Francisco, CA', ipAddress: '192.168.1.1', timestamp: new Date().toISOString(), isCurrent: true },
+    { id: 'log-2', device: 'Nexus App on iPhone 15', location: 'New York, NY', ipAddress: '10.0.0.1', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2).toISOString(), isCurrent: false },
+];
+
+export const trendingTopics = [
+    { tag: 'Tech', posts: 125000, imageUrl: '/trending/tech.jpg' },
+    { tag: 'Photography', posts: 89000, imageUrl: '/trending/photography.jpg' },
+    { tag: 'Gaming', posts: 250000, imageUrl: '/trending/gaming.jpg' },
 ];

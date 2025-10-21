@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Post as PostType, User } from '../types';
+// FIX: Add file extension to import.
+import { Post as PostType, User } from '../types.ts';
 import Post from './Post';
 import Icon from './Icon';
 

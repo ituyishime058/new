@@ -1,10 +1,10 @@
 
 import React from 'react';
 // FIX: Corrected import path for constants
-import { currentUser } from './constants';
+import { currentUser } from './constants.ts';
 // FIX: Corrected import path for components
-import Avatar from './components/Avatar';
-import Icon from './components/Icon';
+import Avatar from './components/Avatar.tsx';
+import Icon from './components/Icon.tsx';
 
 type Page = 'home' | 'explore' | 'reels' | 'messages' | 'notifications' | 'profile' | 'settings' | 'bookmarks';
 

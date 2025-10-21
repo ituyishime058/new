@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Icon from './Icon';
-// FIX: Corrected import path for constants
-import { highlights } from '../constants';
+// FIX: Add file extension to import.
+import { highlights } from '../constants.ts';
 
 interface AddToHighlightModalProps {
   isOpen: boolean;

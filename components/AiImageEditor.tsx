@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Icon from './Icon';
-import { editImageWithAi } from '../services/geminiService';
+// FIX: Add file extension to import.
+import { editImageWithAi } from '../services/geminiService.ts';
 
 interface AiImageEditorProps {
   isOpen: boolean;

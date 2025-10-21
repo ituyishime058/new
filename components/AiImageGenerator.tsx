@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
-import { generateImageWithImagen } from '../services/geminiService';
+// FIX: Add file extension to import.
+import { generateImageWithImagen } from '../services/geminiService.ts';
 import Icon from './Icon';
 
 const AiImageGenerator: React.FC = () => {

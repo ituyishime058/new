@@ -1,25 +1,33 @@
 
-import React from 'react';
-import { Post as PostType, User } from '../types';
-import CreatePost from './CreatePost';
-import Post from './Post';
-import Stories from './Stories';
+import React, { useState } from 'react';
+import { posts as initialPosts } from '../constants.ts';
+import { Post as PostType, User } from '../types.ts';
+import CreatePost from './CreatePost.tsx';
+import Post from './Post.tsx';
+import Stories from './Stories.tsx';
 
 interface FeedProps {
-  posts: PostType[];
-  onAddPost: (newPost: Omit<PostType, 'id' | 'author' | 'timestamp' | 'likes' | 'comments'>) => void;
-  onViewProfile: (user: User) => void;
-  onUpdatePost: (post: PostType) => void;
+    onViewProfile: (user: User) => void;
 }
 
-const Feed: React.FC<FeedProps> = ({ posts, onAddPost, onViewProfile, onUpdatePost }) => {
+const Feed: React.FC<FeedProps> = ({ onViewProfile }) => {
+  const [posts, setPosts] = useState<PostType[]>(initialPosts);
+
+  const handleNewPost = (post: PostType) => {
+    setPosts(prevPosts => [post, ...prevPosts]);
+  };
+
+  const handleUpdatePost = (updatedPost: PostType) => {
+    setPosts(posts.map(p => p.id === updatedPost.id ? updatedPost : p));
+  }
+
   return (
-    <div>
+    <div className="bg-primary shadow-md rounded-xl">
       <Stories />
-      <CreatePost onAddPost={onAddPost} />
-      <div className="space-y-4">
+      <CreatePost onNewPost={handleNewPost} />
+      <div>
         {posts.map(post => (
-          <Post key={post.id} post={post} onViewProfile={onViewProfile} onUpdatePost={onUpdatePost} />
+          <Post key={post.id} post={post} onViewProfile={onViewProfile} onUpdatePost={handleUpdatePost} />
         ))}
       </div>
     </div>

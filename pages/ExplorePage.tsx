@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
-import { posts } from '../constants';
+// FIX: Add file extension to import.
+import { posts } from '../constants.ts';
 import Icon from '../components/Icon';
 import ImageModal from '../components/ImageModal';
 import AiImageGenerator from '../components/AiImageGenerator';

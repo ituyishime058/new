@@ -1,6 +1,6 @@
 import React from 'react';
 // FIX: Corrected import path for Icon component
-import Icon from './Icon';
+import Icon from './Icon.tsx';
 
 type Page = 'home' | 'explore' | 'reels' | 'live' | 'messages' | 'profile';
 

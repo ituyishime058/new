@@ -1,7 +1,8 @@
 
 import React from 'react';
-import { users } from '../constants';
-import { User } from '../types';
+// FIX: Add file extension to imports.
+import { users } from '../constants.ts';
+import { User } from '../types.ts';
 import Avatar from './Avatar';
 import TrendingTopics from './TrendingTopics';
 

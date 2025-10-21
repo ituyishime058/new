@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { currentUser } from '../constants';
+// FIX: Add file extension to import.
+import { currentUser } from '../constants.ts';
 import Avatar from './Avatar';
 import Icon from './Icon';
 

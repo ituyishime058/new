@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Notification } from '../types';
+// FIX: Add file extension to import.
+import { Notification } from '../types.ts';
 import Icon from './Icon';
 
 interface NotificationToastProps {

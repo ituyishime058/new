@@ -1,6 +1,7 @@
 
 import React, { useState, useMemo } from 'react';
-import { Poll as PollType } from '../types';
+// FIX: Add file extension to import.
+import { Poll as PollType } from '../types.ts';
 import { motion } from 'framer-motion';
 import Icon from './Icon';
 

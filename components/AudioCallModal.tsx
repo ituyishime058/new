@@ -2,7 +2,8 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Icon from './Icon';
-import { User } from '../types';
+// FIX: Add file extension to import.
+import { User } from '../types.ts';
 import Avatar from './Avatar';
 
 interface AudioCallModalProps {

@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { users, conversations } from '../constants';
-import { User, Conversation } from '../types';
+// FIX: Add file extension to imports.
+import { users, conversations } from '../constants.ts';
+import { User, Conversation } from '../types.ts';
 import Icon from './Icon';
 import Avatar from './Avatar';
 

@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { Post as PostType, User } from '../types';
+// FIX: Add file extension to import.
+import { Post as PostType, User } from '../types.ts';
 import Post from '../components/Post';
 import Icon from '../components/Icon';
 
